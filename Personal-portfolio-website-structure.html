@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Personal Portfolio Website Structure</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #fafafa;
+      --surface: #ffffff;
+      --text: #111111;
+      --muted: #666666;
+      --border: #e5e5e5;
+      --accent: #d60000;
+      --mono: "JetBrains Mono", monospace;
+      --sans: "Montserrat", sans-serif;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: var(--sans);
+      color: var(--text);
+      background: var(--bg);
+      line-height: 1.6;
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: 320px 1fr;
+      min-height: 100vh;
+    }
+
+    .sidebar {
+      background: var(--surface);
+      border-right: 1px solid var(--border);
+      padding: 32px 24px;
+      overflow-y: auto;
+      position: sticky;
+      top: 0;
+      height: 100vh;
+    }
+
+    .sidebar h1 {
+      font-size: 18px;
+      font-weight: 600;
+      line-height: 1.3;
+      margin-bottom: 8px;
+    }
+
+    .sidebar p {
+      font-size: 13px;
+      color: var(--muted);
+      margin-bottom: 24px;
+    }
+
+    .nav-group { margin-bottom: 24px; }
+
+    .nav-group h2 {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 10px;
+    }
+
+    .nav-group a {
+      display: block;
+      font-size: 13px;
+      color: var(--text);
+      text-decoration: none;
+      padding: 6px 0;
+      border-bottom: 1px solid transparent;
+      transition: color 0.15s;
+    }
+
+    .nav-group a:hover { color: var(--accent); }
+    .nav-group a.is-active { color: var(--accent); font-weight: 500; }
+
+    .main {
+      padding: 32px 40px 64px;
+      overflow-y: auto;
+    }
+
+    .panel {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      margin-bottom: 24px;
+    }
+
+    .panel__header {
+      padding: 16px 20px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    .panel__header h2 {
+      font-size: 15px;
+      font-weight: 600;
+    }
+
+    .panel__body { padding: 20px; }
+
+    .preview-frame {
+      width: 100%;
+      height: min(72vh, 900px);
+      border: 0;
+      background: #fff;
+    }
+
+    .btn {
+      display: inline-block;
+      font-family: var(--sans);
+      font-size: 12px;
+      font-weight: 500;
+      padding: 8px 14px;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      color: var(--text);
+      text-decoration: none;
+      cursor: pointer;
+      transition: border-color 0.15s, color 0.15s;
+    }
+
+    .btn:hover { border-color: var(--accent); color: var(--accent); }
+    .btn--primary { background: var(--text); color: #fff; border-color: var(--text); }
+    .btn--primary:hover { background: var(--accent); border-color: var(--accent); color: #fff; }
+
+    .tree {
+      font-family: var(--mono);
+      font-size: 12px;
+      line-height: 1.8;
+      white-space: pre;
+      overflow-x: auto;
+      color: #333;
+    }
+
+    .file-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 12px;
+    }
+
+    .file-card {
+      border: 1px solid var(--border);
+      padding: 14px 16px;
+      text-decoration: none;
+      color: inherit;
+      transition: border-color 0.15s;
+    }
+
+    .file-card:hover { border-color: var(--accent); }
+
+    .file-card strong {
+      display: block;
+      font-size: 13px;
+      font-weight: 500;
+      margin-bottom: 4px;
+    }
+
+    .file-card span {
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .note {
+      font-size: 13px;
+      color: var(--muted);
+      padding: 12px 16px;
+      background: #f5f5f5;
+      border-left: 3px solid var(--accent);
+      margin-bottom: 20px;
+    }
+
+    @media (max-width: 960px) {
+      .layout { grid-template-columns: 1fr; }
+      .sidebar { position: static; height: auto; border-right: 0; border-bottom: 1px solid var(--border); }
+      .main { padding: 24px 20px 48px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="layout">
+    <aside class="sidebar">
+      <h1>Personal Portfolio Website Structure</h1>
+      <p>BOWEN 个人作品集 — 项目文档与预览入口</p>
+
+      <nav class="nav-group">
+        <h2>预览</h2>
+        <a href="#preview" data-preview="index.html" class="is-active">首页 Home</a>
+        <a href="#preview" data-preview="work/index.html">作品列表 Work Index</a>
+      </nav>
+
+      <nav class="nav-group">
+        <h2>分类页 Categories</h2>
+        <a href="#preview" data-preview="work/brand.html">Brand 品牌</a>
+        <a href="#preview" data-preview="work/product-design.html">Product Design 产品设计</a>
+        <a href="#preview" data-preview="work/packaging-design.html">Packaging Design 包装设计</a>
+        <a href="#preview" data-preview="work/brand-marketing.html">Brand Marketing 品牌营销</a>
+        <a href="#preview" data-preview="work/work-methods.html">Work Methods 工作方法</a>
+      </nav>
+
+      <nav class="nav-group">
+        <h2>项目详情 Projects</h2>
+        <a href="#preview" data-preview="work/pet-ip.html">Pet IP</a>
+        <a href="#preview" data-preview="work/project-02.html">S9 Game</a>
+        <a href="#preview" data-preview="work/project-03.html">China Goose</a>
+        <a href="#preview" data-preview="work/project-04.html">UNDER ROCK</a>
+        <a href="#preview" data-preview="work/project-05.html">SO RELAX</a>
+        <a href="#preview" data-preview="work/project-06.html">XiaoJu Charging</a>
+        <a href="#preview" data-preview="work/project-07.html">Didi Gas</a>
+        <a href="#preview" data-preview="work/project-08.html">JD JOY</a>
+      </nav>
+
+      <nav class="nav-group">
+        <h2>文档</h2>
+        <a href="#structure">项目结构</a>
+        <a href="#files">全部代码文件</a>
+      </nav>
+    </aside>
+
+    <main class="main">
+      <div class="note">
+        本项目已从 <code>portfolio-skeleton</code> 完整复制到 <code>Git-design</code> 工作区。
+        点击下方链接可在本页预览，或在新标签页中打开完整页面。
+        建议使用本地服务器访问（已在后台启动 <strong id="server-url">http://localhost:8765</strong>）。
+      </div>
+
+      <section class="panel" id="preview">
+        <div class="panel__header">
+          <h2 id="preview-title">预览：首页 Home</h2>
+          <div>
+            <a id="open-tab" href="index.html" target="_blank" rel="noopener" class="btn btn--primary">在新标签页打开</a>
+          </div>
+        </div>
+        <div class="panel__body" style="padding:0;">
+          <iframe id="preview-frame" class="preview-frame" src="index.html" title="Portfolio preview"></iframe>
+        </div>
+      </section>
+
+      <section class="panel" id="structure">
+        <div class="panel__header">
+          <h2>项目结构 Project Structure</h2>
+        </div>
+        <div class="panel__body">
+          <pre class="tree">Git-design/
+├── Personal-portfolio-website-structure.html   ← 本文档（结构说明 + 预览入口）
+├── index.html                                  ← 首页（Hero 视频 + 精选作品 + 履历 + 联系）
+├── assets/
+│   ├── hero-video.mp4                          ← 首页顶部 Showreel
+│   ├── css/
+│   │   ├── work-index.css                      ← 作品列表页样式
+│   │   └── work-detail.css                     ← 项目详情页样式
+│   ├── js/
+│   │   ├── work-index.js                       ← 作品列表交互（hover 视频等）
+│   │   └── work-detail.js                      ← 项目详情交互
+│   └── projects/                               ← 各项目图片与 hover 视频
+│       ├── pet-ip/  S9game/  ZGDE/  under/
+│       ├── SO RELAX/  XIAOJU/  DIDI加油/  JD JOY/
+│       └── ...
+└── work/
+    ├── index.html                              ← 全部作品列表 + 分类筛选
+    ├── brand.html                              ← 品牌类作品
+    ├── product-design.html                     ← 产品设计类
+    ├── packaging-design.html                   ← 包装设计类
+    ├── brand-marketing.html                    ← 品牌营销类
+    ├── work-methods.html                       ← 工作方法
+    ├── pet-ip.html                             ← Pet IP 详情
+    └── project-02.html … project-08.html       ← 各项目详情页</pre>
+        </div>
+      </section>
+
+      <section class="panel" id="files">
+        <div class="panel__header">
+          <h2>全部代码文件 All Code Files</h2>
+        </div>
+        <div class="panel__body">
+          <div class="file-grid">
+            <a class="file-card" href="index.html" target="_blank"><strong>index.html</strong><span>首页 — 内联 CSS + JS</span></a>
+            <a class="file-card" href="work/index.html" target="_blank"><strong>work/index.html</strong><span>作品列表页</span></a>
+            <a class="file-card" href="work/brand.html" target="_blank"><strong>work/brand.html</strong><span>品牌分类</span></a>
+            <a class="file-card" href="work/product-design.html" target="_blank"><strong>work/product-design.html</strong><span>产品设计分类</span></a>
+            <a class="file-card" href="work/packaging-design.html" target="_blank"><strong>work/packaging-design.html</strong><span>包装设计分类</span></a>
+            <a class="file-card" href="work/brand-marketing.html" target="_blank"><strong>work/brand-marketing.html</strong><span>品牌营销分类</span></a>
+            <a class="file-card" href="work/work-methods.html" target="_blank"><strong>work/work-methods.html</strong><span>工作方法</span></a>
+            <a class="file-card" href="work/pet-ip.html" target="_blank"><strong>work/pet-ip.html</strong><span>Pet IP 详情</span></a>
+            <a class="file-card" href="work/project-02.html" target="_blank"><strong>work/project-02.html</strong><span>S9 Game</span></a>
+            <a class="file-card" href="work/project-03.html" target="_blank"><strong>work/project-03.html</strong><span>China Goose</span></a>
+            <a class="file-card" href="work/project-04.html" target="_blank"><strong>work/project-04.html</strong><span>UNDER ROCK</span></a>
+            <a class="file-card" href="work/project-05.html" target="_blank"><strong>work/project-05.html</strong><span>SO RELAX</span></a>
+            <a class="file-card" href="work/project-06.html" target="_blank"><strong>work/project-06.html</strong><span>XiaoJu Charging</span></a>
+            <a class="file-card" href="work/project-07.html" target="_blank"><strong>work/project-07.html</strong><span>Didi Gas</span></a>
+            <a class="file-card" href="work/project-08.html" target="_blank"><strong>work/project-08.html</strong><span>JD JOY</span></a>
+            <a class="file-card" href="assets/css/work-index.css" target="_blank"><strong>assets/css/work-index.css</strong><span>列表页样式</span></a>
+            <a class="file-card" href="assets/css/work-detail.css" target="_blank"><strong>assets/css/work-detail.css</strong><span>详情页样式</span></a>
+            <a class="file-card" href="assets/js/work-index.js" target="_blank"><strong>assets/js/work-index.js</strong><span>列表页脚本</span></a>
+            <a class="file-card" href="assets/js/work-detail.js" target="_blank"><strong>assets/js/work-detail.js</strong><span>详情页脚本</span></a>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    (function () {
+      var frame = document.getElementById("preview-frame");
+      var title = document.getElementById("preview-title");
+      var openTab = document.getElementById("open-tab");
+      var links = document.querySelectorAll("[data-preview]");
+
+      var labels = {
+        "index.html": "首页 Home",
+        "work/index.html": "作品列表 Work Index",
+        "work/brand.html": "Brand 品牌",
+        "work/product-design.html": "Product Design 产品设计",
+        "work/packaging-design.html": "Packaging Design 包装设计",
+        "work/brand-marketing.html": "Brand Marketing 品牌营销",
+        "work/work-methods.html": "Work Methods 工作方法",
+        "work/pet-ip.html": "Pet IP",
+        "work/project-02.html": "S9 Game",
+        "work/project-03.html": "China Goose",
+        "work/project-04.html": "UNDER ROCK",
+        "work/project-05.html": "SO RELAX",
+        "work/project-06.html": "XiaoJu Charging",
+        "work/project-07.html": "Didi Gas",
+        "work/project-08.html": "JD JOY"
+      };
+
+      links.forEach(function (link) {
+        link.addEventListener("click", function (event) {
+          event.preventDefault();
+          var path = link.getAttribute("data-preview");
+          frame.src = path;
+          openTab.href = path;
+          title.textContent = "预览：" + (labels[path] || path);
+          links.forEach(function (l) { l.classList.remove("is-active"); });
+          link.classList.add("is-active");
+        });
+      });
+    })();
+  </script>
+</body>
+</html>

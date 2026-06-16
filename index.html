@@ -1,0 +1,918 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BOWEN — Brand &amp; Marketing</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --color-white: #FFFFFF;
+      --color-black: #000000;
+      --color-accent: #D60000;
+
+      --font-family: "Montserrat", "Helvetica Neue", Helvetica, Arial, sans-serif;
+      --font-light: 300;
+      --font-regular: 400;
+      --font-medium: 500;
+      --font-bold: 700;
+
+      --text-logo: clamp(22px, 1.43vw, 27.382px);
+      --text-nav: clamp(14px, 1.01vw, 19.447px);
+      --text-hero: clamp(28px, 2.94vw, 37.621px);
+      --text-hero-leading: clamp(34px, 3.59vw, 46px);
+      --text-section: clamp(20px, 2.2vw, 28.148px);
+      --text-section-label: 35px;
+      --text-cta: clamp(16px, 1.64vw, 20.99px);
+      --text-heading: clamp(48px, 3.4vw, 65px);
+      --text-career-title: 16.979px;
+      --text-career-title-sm: 12.426px;
+      --text-body-sm: 12.213px;
+      --text-body-leading: 18.285px;
+      --text-contact: 35.062px;
+      --text-footer-brand: clamp(80px, 12.8vw, 244.501px);
+
+      --page-padding: clamp(32px, 2.08vw, 48px);
+      --divider-inset: clamp(32px, 2.08vw, 48px);
+      --max-width: none;
+      --grid-gap: clamp(12px, 0.94vw, 16px);
+
+      --header-height: 84px;
+      --space-hero-top: 74px;
+      --space-title-divider: 112px;
+      --space-divider-label: 27px;
+      --space-label-grid: 54px;
+      --space-grid-cta: 141px;
+      --space-cta-career: 107px;
+      --space-career-contact: 157px;
+      --space-divider-heading: clamp(20px, 1.67vw, 27px);
+      --space-heading-content: 80px;
+      --space-contact-footer: 120px;
+
+      --transition-fast: 0.2s ease;
+      --transition-base: 0.35s ease;
+    }
+
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    body {
+      font-family: var(--font-family);
+      font-weight: var(--font-regular);
+      color: var(--color-black);
+      background-color: var(--color-white);
+      overflow-x: hidden;
+    }
+
+    img,
+    video {
+      display: block;
+      max-width: 100%;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    ul {
+      list-style: disc;
+      padding-left: 18px;
+    }
+
+    .container {
+      width: 100%;
+      max-width: var(--max-width);
+      margin-inline: auto;
+      padding-inline: var(--page-padding);
+    }
+
+    .section-divider {
+      display: block;
+      width: 100%;
+      height: 1px;
+      border: 0;
+      background-color: var(--color-black);
+    }
+
+    .section-heading {
+      font-size: var(--text-heading);
+      font-weight: var(--font-medium);
+      line-height: 1.08;
+    }
+
+    /* Header */
+    .header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      width: 100%;
+      height: var(--header-height);
+      background-color: var(--color-white);
+    }
+
+    .header__inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 100%;
+    }
+
+    .header__logo {
+      font-size: var(--text-logo);
+      font-weight: var(--font-medium);
+      line-height: 1;
+    }
+
+    .header__nav {
+      display: flex;
+      align-items: center;
+      gap: clamp(24px, 2.5vw, 48px);
+    }
+
+    .header__nav-link {
+      font-size: var(--text-nav);
+      font-weight: var(--font-regular);
+      line-height: 1;
+      transition: opacity var(--transition-fast);
+    }
+
+    .header__nav-link:hover {
+      opacity: 0.55;
+    }
+
+    /* Hero video */
+    .hero-video {
+      width: 100%;
+      background-color: var(--color-white);
+    }
+
+    .hero-video__media {
+      width: 100%;
+      height: auto;
+    }
+
+    /* Intro */
+    .intro {
+      padding-top: var(--space-hero-top);
+    }
+
+    .intro__title-line {
+      display: block;
+      font-size: var(--text-hero);
+      font-weight: var(--font-medium);
+      line-height: var(--text-hero-leading);
+    }
+
+    .intro__title-line--lower {
+      text-transform: uppercase;
+    }
+
+    .intro__divider {
+      display: block;
+      width: 100%;
+      height: 1px;
+      margin-top: var(--space-title-divider);
+      border: 0;
+      background-color: var(--color-black);
+    }
+
+    .intro__label,
+    .career .section-heading,
+    .contact .section-heading {
+      font-size: var(--text-section-label);
+      font-weight: var(--font-medium);
+      line-height: 1;
+    }
+
+    .career .section-heading,
+    .contact .section-heading {
+      text-transform: uppercase;
+    }
+
+    .intro__label {
+      margin-top: var(--space-divider-label);
+    }
+
+    /* Projects */
+    .projects {
+      padding-top: var(--space-label-grid);
+    }
+
+    .projects__row + .projects__row {
+      margin-top: var(--grid-gap);
+    }
+
+    .projects__row--2 {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: var(--grid-gap);
+    }
+
+    .projects__row--3 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--grid-gap);
+    }
+
+    .project-item {
+      opacity: 0;
+      transform: translate3d(0, 48px, 0);
+      transition:
+        opacity 1.1s cubic-bezier(0.22, 1, 0.36, 1),
+        transform 1.1s cubic-bezier(0.22, 1, 0.36, 1);
+      will-change: opacity, transform;
+    }
+
+    .project-item.is-visible {
+      opacity: 1;
+      transform: translate3d(0, 0, 0);
+    }
+
+    .project-item__link {
+      display: block;
+    }
+
+    .project-item__media {
+      position: relative;
+      overflow: hidden;
+      background-color: var(--color-white);
+    }
+
+    .projects__row--2 .project-item__media {
+      aspect-ratio: 598.63 / 336.73;
+    }
+
+    .projects__row--3 .project-item__media {
+      aspect-ratio: 394 / 213;
+    }
+
+    .project-item__image,
+    .project-item__poster {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      transition: opacity var(--transition-base), transform var(--transition-base);
+    }
+
+    .project-item--hover-video .project-item__poster,
+    .project-item--hover-video .project-item__video {
+      position: absolute;
+      inset: 0;
+    }
+
+    .project-item--hover-video .project-item__video {
+      opacity: 0;
+    }
+
+    .project-item--hover-video.is-playing .project-item__video {
+      opacity: 1;
+    }
+
+    .project-item--hover-video.is-playing .project-item__poster {
+      opacity: 0;
+    }
+
+    .project-item__overlay {
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      background-color: var(--color-black);
+      opacity: 0;
+      transition: opacity var(--transition-base);
+      pointer-events: none;
+    }
+
+    .project-item:not(.project-item--hover-video):hover .project-item__image {
+      transform: scale(1.02);
+    }
+
+    .project-item:hover .project-item__overlay {
+      opacity: 0.08;
+    }
+
+    .projects__cta {
+      display: block;
+      width: fit-content;
+      margin: var(--space-grid-cta) auto 0;
+      font-size: var(--text-cta);
+      font-weight: var(--font-regular);
+      line-height: 1;
+      opacity: 0;
+      transform: translate3d(0, 32px, 0);
+      transition:
+        opacity 1s cubic-bezier(0.22, 1, 0.36, 1),
+        transform 1s cubic-bezier(0.22, 1, 0.36, 1);
+      will-change: opacity, transform;
+    }
+
+    .projects__cta.is-visible {
+      opacity: 1;
+      transform: translate3d(0, 0, 0);
+    }
+
+    .projects__cta.is-visible:hover {
+      opacity: 0.55;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .project-item,
+      .projects__cta {
+        opacity: 1;
+        transform: none;
+        transition: none;
+      }
+    }
+
+    /* Career — full-width grid, Figma 6:217 proportions */
+    .career {
+      padding-top: var(--space-cta-career);
+    }
+
+    .career .section-divider {
+      margin-bottom: var(--space-divider-heading);
+    }
+
+    .career__grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      column-gap: clamp(92px, 7.2vw, 160px);
+      row-gap: clamp(80px, 6vw, 112px);
+      margin-top: var(--space-heading-content);
+    }
+
+    .career__entry-header {
+      display: flex;
+      align-items: center;
+      min-height: 40px;
+    }
+
+    .career__brand {
+      flex: 0 0 auto;
+      display: flex;
+      align-items: center;
+      height: 40px;
+      line-height: 0;
+    }
+
+    .career__brand--posher {
+      height: 35px;
+    }
+
+    .career__logo {
+      display: block;
+      width: auto;
+      height: auto;
+      max-width: none;
+      object-fit: contain;
+      object-position: left center;
+    }
+
+    .career__logo--netease { width: clamp(160px, 11.2vw, 214px); }
+    .career__logo--didi { width: clamp(96px, 6.6vw, 127px); }
+    .career__logo--jd { width: clamp(110px, 7.1vw, 137px); }
+    .career__logo--posher { width: clamp(108px, 7vw, 136px); }
+
+    .career__sublogo {
+      display: block;
+      margin-top: 20px;
+      width: clamp(72px, 4.8vw, 92px);
+      height: auto;
+    }
+
+    .career__separator {
+      flex: 0 0 1px;
+      width: 1px;
+      height: 30px;
+      background-color: #D1D1D1;
+    }
+
+    .career__entry--netease .career__separator { margin-left: clamp(20px, 2.6vw, 33px); margin-right: clamp(16px, 2vw, 26px); }
+    .career__entry--didi .career__separator { margin-left: clamp(18px, 2.2vw, 28px); margin-right: clamp(20px, 2.6vw, 34px); }
+    .career__entry--jd .career__separator { margin-left: clamp(18px, 2.3vw, 29px); margin-right: clamp(14px, 1.9vw, 24px); }
+    .career__entry--posher .career__separator { margin-left: clamp(12px, 1.4vw, 18px); margin-right: clamp(16px, 2.2vw, 28px); }
+
+    .career__meta {
+      flex: 1 1 auto;
+      font-size: 12px;
+      font-weight: var(--font-medium);
+      line-height: 13px;
+    }
+
+    .career__date {
+      display: block;
+      margin-bottom: 4px;
+    }
+
+    .career__role {
+      display: block;
+      color: var(--color-accent);
+    }
+
+    .career__body {
+      margin-top: clamp(24px, 2.7vw, 35px);
+      max-width: min(512px, 92%);
+      font-size: var(--text-body-sm);
+      font-weight: var(--font-light);
+      line-height: var(--text-body-leading);
+    }
+
+    .career__entry:nth-child(even) .career__body {
+      max-width: min(489px, 92%);
+    }
+
+    .career__body ul {
+      margin-top: 0;
+    }
+
+    .career__body li + li {
+      margin-top: 4px;
+    }
+
+    .career__body p + p {
+      margin-top: 8px;
+    }
+
+    /* Contact */
+    .contact {
+      padding-top: var(--space-career-contact);
+      padding-bottom: var(--space-contact-footer);
+    }
+
+    .contact .section-divider {
+      margin-bottom: var(--space-divider-heading);
+    }
+
+    .contact__layout {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-heading-content);
+      align-items: start;
+    }
+
+    .contact__details {
+      justify-self: end;
+      width: 100%;
+      max-width: 520px;
+    }
+
+    .contact__details p {
+      font-size: var(--text-contact);
+      font-weight: var(--font-regular);
+      line-height: 1.25;
+    }
+
+    .contact__details p + p {
+      margin-top: 22px;
+    }
+
+    .contact__label {
+      font-weight: var(--font-medium);
+    }
+
+    .contact__link:hover {
+      opacity: 0.55;
+    }
+
+    /* Footer brand */
+    .footer-brand {
+      width: 100%;
+      padding: 0 var(--page-padding) 48px;
+      overflow: hidden;
+    }
+
+    .footer-brand__text {
+      font-size: var(--text-footer-brand);
+      font-weight: var(--font-medium);
+      line-height: 0.95;
+      letter-spacing: -0.02em;
+      white-space: nowrap;
+    }
+
+    .footer-brand__handle {
+      margin-top: 24px;
+      font-size: 18.05px;
+      font-weight: var(--font-medium);
+      line-height: 1;
+    }
+
+    /* Responsive */
+    @media (max-width: 1024px) {
+      :root {
+        --text-contact: 28px;
+      }
+
+      .header__nav {
+        gap: 24px;
+      }
+
+      .career__grid,
+      .contact__layout {
+        grid-template-columns: 1fr;
+      }
+
+      .contact__details {
+        justify-self: start;
+        max-width: none;
+      }
+    }
+
+    @media (max-width: 640px) {
+      :root {
+        --header-height: 64px;
+        --text-logo: 22px;
+        --text-nav: 14px;
+        --text-hero: 28px;
+        --text-hero-leading: 34px;
+        --text-section: 22px;
+        --text-heading: 36px;
+        --text-contact: 22px;
+        --space-hero-top: 48px;
+        --space-title-divider: 64px;
+        --space-label-grid: 32px;
+        --space-grid-cta: 64px;
+        --page-padding: 20px;
+      }
+
+      .header__nav {
+        gap: 16px;
+      }
+
+      .projects__row--2,
+      .projects__row--3 {
+        grid-template-columns: 1fr;
+      }
+
+      .footer-brand__text {
+        white-space: normal;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="header">
+    <div class="container header__inner">
+      <a href="index.html" class="header__logo">BROWNE</a>
+      <nav class="header__nav" aria-label="Primary">
+        <a href="work/index.html" class="header__nav-link">WORK</a>
+        <a href="#info" class="header__nav-link">INFO</a>
+        <a href="#contact" class="header__nav-link">CONTACT</a>
+      </nav>
+    </div>
+  </header>
+
+  <section class="hero-video" aria-label="Showreel">
+    <video
+      class="hero-video__media"
+      src="assets/hero-video.mp4"
+      autoplay
+      muted
+      loop
+      playsinline
+      preload="metadata"
+    ></video>
+  </section>
+
+  <main>
+    <section class="intro container" aria-label="Introduction">
+      <h1 class="intro__title">
+        <span class="intro__title-line">BOWEN DESIGN</span>
+        <span class="intro__title-line">BRAND &amp; MARKETING</span>
+        <span class="intro__title-line intro__title-line--lower">management</span>
+      </h1>
+      <hr class="intro__divider">
+      <p class="intro__label">SELECTED WORK</p>
+    </section>
+
+    <section id="work" class="projects container" aria-label="Selected work">
+      <div class="projects__row projects__row--2">
+        <article class="project-item project-item--hover-video" id="work-r1-left" data-project="pet-ip">
+          <a href="work/pet-ip.html" class="project-item__link" aria-label="Pet IP">
+            <div class="project-item__media">
+              <img class="project-item__poster" src="assets/projects/pet-ip-cover.png" alt="Pet IP" loading="lazy">
+              <video class="project-item__video" src="assets/projects/pet-ip-hover.mp4" muted playsinline loop preload="none"></video>
+              <div class="project-item__overlay" aria-hidden="true"></div>
+            </div>
+          </a>
+        </article>
+        <article class="project-item project-item--hover-video" id="work-r1-right" data-project="s9game">
+          <a href="work/project-02.html" class="project-item__link" aria-label="S9 Game">
+            <div class="project-item__media">
+              <img class="project-item__poster" src="assets/projects/S9game/S9game.png" alt="S9 Game" loading="lazy">
+              <video class="project-item__video" src="assets/projects/S9game/视频-hover.mp4" muted playsinline loop preload="none"></video>
+              <div class="project-item__overlay" aria-hidden="true"></div>
+            </div>
+          </a>
+        </article>
+      </div>
+
+      <div class="projects__row projects__row--3">
+        <article class="project-item project-item--hover-video" id="work-r2-left" data-project="zgde">
+          <a href="work/project-03.html" class="project-item__link" aria-label="China Goose Brand Design">
+            <div class="project-item__media">
+              <img class="project-item__poster" src="assets/projects/ZGDE/1.jpg" alt="China Goose Brand Design" loading="lazy">
+              <video class="project-item__video" src="assets/projects/ZGDE/视频-hover.mp4" muted playsinline loop preload="none"></video>
+              <div class="project-item__overlay" aria-hidden="true"></div>
+            </div>
+          </a>
+        </article>
+        <article class="project-item project-item--hover-video" id="work-r2-center" data-project="under-rock">
+          <a href="work/project-04.html" class="project-item__link" aria-label="UNDER ROCK Brand Design">
+            <div class="project-item__media">
+              <img class="project-item__poster" src="assets/projects/under/石下品牌-封面.png" alt="UNDER ROCK Brand Design" loading="lazy">
+              <video class="project-item__video" src="assets/projects/under/视频-hover.mp4" muted playsinline loop preload="none"></video>
+              <div class="project-item__overlay" aria-hidden="true"></div>
+            </div>
+          </a>
+        </article>
+        <article class="project-item project-item--hover-video" id="work-r2-right" data-project="so-relax">
+          <a href="work/project-05.html" class="project-item__link" aria-label="SO RELAX Brand Packaging Design">
+            <div class="project-item__media">
+              <img class="project-item__poster" src="assets/projects/SO RELAX/枕头.png" alt="SO RELAX Brand Packaging Design" loading="lazy">
+              <video class="project-item__video" src="assets/projects/SO RELAX/视频-hover.mp4" muted playsinline loop preload="none"></video>
+              <div class="project-item__overlay" aria-hidden="true"></div>
+            </div>
+          </a>
+        </article>
+        <article class="project-item" id="work-r3-left" data-project="xiaoju">
+          <a href="work/project-06.html" class="project-item__link" aria-label="XiaoJu Charging">
+            <div class="project-item__media">
+              <img class="project-item__image" src="assets/projects/XIAOJU/小桔充电.png" alt="XiaoJu Charging" loading="lazy">
+              <div class="project-item__overlay" aria-hidden="true"></div>
+            </div>
+          </a>
+        </article>
+        <article class="project-item" id="work-r3-center" data-project="didi-gas">
+          <a href="work/project-07.html" class="project-item__link" aria-label="Didi Gas">
+            <div class="project-item__media">
+              <img class="project-item__image" src="assets/projects/DIDI加油/滴滴加油.png" alt="Didi Gas" loading="lazy">
+              <div class="project-item__overlay" aria-hidden="true"></div>
+            </div>
+          </a>
+        </article>
+        <article class="project-item" id="work-r3-right" data-project="jd-joy">
+          <a href="work/project-08.html" class="project-item__link" aria-label="JD JOY">
+            <div class="project-item__media">
+              <img class="project-item__image" src="assets/projects/JD JOY/JD JOY.png" alt="JD JOY" loading="lazy">
+              <div class="project-item__overlay" aria-hidden="true"></div>
+            </div>
+          </a>
+        </article>
+      </div>
+
+      <a href="work/index.html" class="projects__cta">VIEW ALL WORK</a>
+    </section>
+
+    <section id="info" class="career container" aria-label="Career history">
+      <hr class="section-divider">
+      <h2 class="section-heading">Career History</h2>
+
+      <div class="career__grid">
+        <article class="career__entry career__entry--netease">
+          <div class="career__entry-header">
+            <div class="career__brand">
+              <img class="career__logo career__logo--netease" src="https://www.figma.com/api/mcp/asset/3d5f3c26-9756-48ac-a97c-effde2bd7be1" alt="NetEase" width="214" height="40">
+            </div>
+            <span class="career__separator" aria-hidden="true"></span>
+            <div class="career__meta">
+              <span class="career__date">Apr 2022 – Present</span>
+              <span class="career__role">Brand Marketing Design Leader</span>
+            </div>
+          </div>
+          <div class="career__body">
+            <p>Led end-to-end brand system building from 0 to 1 and full-cycle design enablement, driving business growth through a complete design closed loop of "brand mindshare → marketing traffic acquisition → sales conversion".</p>
+            <p>Possess strong strategic insight and creative execution capabilities, adept at solving business pain points with systematic design thinking.</p>
+            <img class="career__sublogo" src="https://www.figma.com/api/mcp/asset/4eef1a22-05a8-4640-bfc8-3f43ee7063f4" alt="NetEase Yanxuan" width="92" height="21">
+          </div>
+        </article>
+
+        <article class="career__entry career__entry--didi">
+          <div class="career__entry-header">
+            <div class="career__brand">
+              <img class="career__logo career__logo--didi" src="https://www.figma.com/api/mcp/asset/084d4853-006a-4e06-a600-bdd530cb4666" alt="Didi" width="127" height="40">
+            </div>
+            <span class="career__separator" aria-hidden="true"></span>
+            <div class="career__meta">
+              <span class="career__date">Jun 2021 – Jan 2022</span>
+              <span class="career__role">Senior Brand Designer</span>
+            </div>
+          </div>
+          <div class="career__body">
+            <ul>
+              <li>Built and iterated brand systems for Didi's energy sector (Didi Refueling, Xiaoju Charging)</li>
+              <li>Standardized full brand touchpoints (in-app, offline stations, marketing merchandise) to ensure consistent brand identity across all scenarios</li>
+              <li>Delivered high-standard visual &amp; operational design to strengthen sub-brand awareness, driving user adoption and conversion growth for new businesses</li>
+            </ul>
+          </div>
+        </article>
+
+        <article class="career__entry career__entry--jd">
+          <div class="career__entry-header">
+            <div class="career__brand">
+              <img class="career__logo career__logo--jd" src="https://www.figma.com/api/mcp/asset/586a018a-035c-42bb-a974-e25959530f53" alt="JD.com" width="137" height="40">
+            </div>
+            <span class="career__separator" aria-hidden="true"></span>
+            <div class="career__meta">
+              <span class="career__date">Mar 2020 – Jun 2021</span>
+              <span class="career__role">Brand Design Team Lead</span>
+            </div>
+          </div>
+          <div class="career__body">
+            <ul>
+              <li>Led company-level brand visual upgrade for JD Daojia (O2O business)</li>
+              <li>Built and optimized marketing design system, unifying visual identity across online platform and full offline marketing scenarios</li>
+              <li>Established systematic design guidelines to resolve O2O multi-touchpoint design pain points, improved brand recognizability &amp; professionalism in complex offline environments, and empowered business scale growth</li>
+            </ul>
+          </div>
+        </article>
+
+        <article class="career__entry career__entry--posher">
+          <div class="career__entry-header">
+            <div class="career__brand career__brand--posher">
+              <img class="career__logo career__logo--posher" src="https://www.figma.com/api/mcp/asset/8c8de0b8-bb3f-4bf8-85b2-6d09bfe58072" alt="Posher" width="136" height="35">
+            </div>
+            <span class="career__separator" aria-hidden="true"></span>
+            <div class="career__meta">
+              <span class="career__date">Oct 2017 – Jan 2020</span>
+              <span class="career__role">Art Director</span>
+            </div>
+          </div>
+          <div class="career__body">
+            <ul>
+              <li>Led full-cycle commercial creative projects for premium brands including Bright Dairy, Michelin, and Freshippo</li>
+              <li>Delivered extensive commercial case works, and won multiple large-scale creative pitches for the agency</li>
+            </ul>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section id="contact" class="contact container" aria-label="Contact">
+      <hr class="section-divider">
+      <div class="contact__layout">
+        <h2 class="section-heading">Contact</h2>
+        <div class="contact__details">
+          <p class="contact__label">Emile</p>
+          <p><a class="contact__link" href="mailto:brownejiang@163.com">brownejiang@163.com</a></p>
+          <p class="contact__label">WHCHAT</p>
+          <p>18821222916</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer-brand container">
+    <p class="footer-brand__text">BRONWE</p>
+    <p class="footer-brand__handle">@BOWEN</p>
+  </footer>
+
+  <script>
+    (function () {
+      const header = document.querySelector(".header");
+      const navLinks = document.querySelectorAll(".header__nav-link");
+      const headerHeight = header.offsetHeight;
+      const heroVideo = document.querySelector(".hero-video__media");
+
+      if (heroVideo) {
+        function setHeroVideoAspectRatio() {
+          if (heroVideo.videoWidth && heroVideo.videoHeight) {
+            heroVideo.style.aspectRatio = heroVideo.videoWidth + " / " + heroVideo.videoHeight;
+          }
+        }
+
+        heroVideo.addEventListener("loadedmetadata", setHeroVideoAspectRatio);
+        if (heroVideo.readyState >= 1) {
+          setHeroVideoAspectRatio();
+        }
+      }
+
+      navLinks.forEach(function (link) {
+        link.addEventListener("click", function (event) {
+          const targetId = link.getAttribute("href");
+          if (!targetId || targetId.charAt(0) !== "#") return;
+
+          const target = document.querySelector(targetId);
+          if (!target) return;
+
+          event.preventDefault();
+          const top = target.getBoundingClientRect().top + window.scrollY - headerHeight;
+          window.scrollTo({ top: top, behavior: "smooth" });
+        });
+      });
+
+      const sections = document.querySelectorAll("section[id]");
+
+      function updateActiveNav() {
+        let current = "";
+
+        sections.forEach(function (section) {
+          const sectionTop = section.offsetTop - headerHeight - 40;
+          if (window.scrollY >= sectionTop) {
+            current = section.getAttribute("id");
+          }
+        });
+
+        navLinks.forEach(function (link) {
+          link.style.opacity = link.getAttribute("href") === "#" + current ? "0.55" : "";
+        });
+      }
+
+      window.addEventListener("scroll", updateActiveNav, { passive: true });
+
+      const projectItems = document.querySelectorAll(".projects .project-item");
+      const projectsCta = document.querySelector(".projects__cta");
+      const revealTargets = projectsCta
+        ? [...projectItems, projectsCta]
+        : [...projectItems];
+
+      if ("IntersectionObserver" in window && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+        const revealObserver = new IntersectionObserver(
+          function (entries) {
+            entries.forEach(function (entry) {
+              if (!entry.isIntersecting) return;
+
+              revealObserver.unobserve(entry.target);
+
+              requestAnimationFrame(function () {
+                requestAnimationFrame(function () {
+                  entry.target.classList.add("is-visible");
+                });
+              });
+            });
+          },
+          {
+            threshold: 0.08,
+            rootMargin: "80px 0px -5% 0px",
+          }
+        );
+
+        revealTargets.forEach(function (target) {
+          if (target.classList.contains("projects__cta")) {
+            target.style.transitionDelay = "0.24s";
+            revealObserver.observe(target);
+            return;
+          }
+
+          const row = target.closest(".projects__row");
+          const rows = row ? [...row.parentElement.querySelectorAll(".projects__row")] : [];
+          const rowIndex = row ? rows.indexOf(row) : 0;
+          const colIndex = row ? [...row.querySelectorAll(".project-item")].indexOf(target) : 0;
+          const delay = 0.06 + rowIndex * 0.14 + colIndex * 0.08;
+
+          target.style.transitionDelay = delay.toFixed(2) + "s";
+          revealObserver.observe(target);
+        });
+      } else {
+        revealTargets.forEach(function (target) {
+          target.classList.add("is-visible");
+        });
+      }
+
+      document.querySelectorAll(".project-item--hover-video").forEach(function (item) {
+        const video = item.querySelector(".project-item__video");
+        if (!video) return;
+
+        function playPreview() {
+          if (video.readyState === 0) {
+            video.load();
+          }
+
+          video.currentTime = 0;
+          const playPromise = video.play();
+          if (playPromise !== undefined) {
+            playPromise.catch(function () {});
+          }
+
+          item.classList.add("is-playing");
+        }
+
+        function stopPreview() {
+          video.pause();
+          item.classList.remove("is-playing");
+        }
+
+        item.addEventListener("mouseenter", playPreview);
+        item.addEventListener("mouseleave", stopPreview);
+        item.addEventListener("focusin", playPreview);
+        item.addEventListener("focusout", stopPreview);
+      });
+    })();
+  </script>
+
+</body>
+</html>
