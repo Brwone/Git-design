@@ -12,6 +12,11 @@
       --color-white: #FFFFFF;
       --color-black: #000000;
       --color-accent: #D60000;
+      --color-line: rgba(255, 255, 255, 0.5);
+      --color-menu-bg: #000000;
+
+      --text-menu-nav: clamp(28px, 2.8vw, 42px);
+      --text-menu-search: clamp(14px, 1.01vw, 19.447px);
 
       --font-family: "Montserrat", "Helvetica Neue", Helvetica, Arial, sans-serif;
       --font-light: 300;
@@ -26,6 +31,7 @@
       --text-section: clamp(20px, 2.2vw, 28.148px);
       --text-section-label: 35px;
       --text-cta: clamp(16px, 1.64vw, 20.99px);
+      --text-card-title: 13px;
       --text-heading: clamp(48px, 3.4vw, 65px);
       --text-career-title: 16.979px;
       --text-career-title-sm: 12.426px;
@@ -72,8 +78,8 @@
     body {
       font-family: var(--font-family);
       font-weight: var(--font-regular);
-      color: var(--color-black);
-      background-color: var(--color-white);
+      color: var(--color-white);
+      background-color: var(--color-black);
       overflow-x: hidden;
     }
 
@@ -105,7 +111,7 @@
       width: 100%;
       height: 1px;
       border: 0;
-      background-color: var(--color-black);
+      background-color: var(--color-line);
     }
 
     .section-heading {
@@ -121,7 +127,7 @@
       z-index: 100;
       width: 100%;
       height: var(--header-height);
-      background-color: var(--color-white);
+      background-color: var(--color-black);
     }
 
     .header__inner {
@@ -135,6 +141,12 @@
       font-size: var(--text-logo);
       font-weight: var(--font-medium);
       line-height: 1;
+    }
+
+    .header__actions {
+      display: flex;
+      align-items: center;
+      gap: clamp(24px, 2.5vw, 48px);
     }
 
     .header__nav {
@@ -154,15 +166,260 @@
       opacity: 0.55;
     }
 
+    .header__menu-toggle {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 7px;
+      width: 28px;
+      height: 28px;
+      padding: 0;
+      border: 0;
+      background: transparent;
+      cursor: pointer;
+      transition: opacity var(--transition-fast);
+    }
+
+    .header__menu-toggle:hover {
+      opacity: 0.55;
+    }
+
+    .header__menu-bar {
+      display: block;
+      width: 100%;
+      height: 2px;
+      background-color: var(--color-white);
+      transform-origin: center;
+      transition:
+        transform 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+        opacity 0.3s ease;
+    }
+
+    .header__menu-toggle.is-active .header__menu-bar:first-child {
+      transform: translateY(9px) rotate(45deg);
+    }
+
+    .header__menu-toggle.is-active .header__menu-bar:last-child {
+      transform: translateY(-9px) rotate(-45deg);
+    }
+
+    body.menu-open {
+      overflow: hidden;
+    }
+
+    /* Menu overlay */
+    .menu-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 300;
+      background-color: var(--color-menu-bg);
+      color: var(--color-white);
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+      visibility: hidden;
+      pointer-events: none;
+      transition: visibility 0.6s ease;
+    }
+
+    .menu-overlay.is-open {
+      visibility: visible;
+      pointer-events: auto;
+    }
+
+    .menu-overlay__panel {
+      min-height: 100%;
+      padding-top: 0;
+      opacity: 0;
+      transform: translateY(-24px);
+      transition:
+        opacity 0.55s cubic-bezier(0.22, 1, 0.36, 1),
+        transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .menu-overlay.is-open .menu-overlay__panel {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .menu-overlay__header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: var(--header-height);
+    }
+
+    .menu-overlay__logo {
+      font-size: var(--text-logo);
+      font-weight: var(--font-medium);
+      line-height: 1;
+    }
+
+    .menu-overlay__close {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 28px;
+      height: 28px;
+      padding: 0;
+      border: 0;
+      background: transparent;
+      color: var(--color-white);
+      font-family: var(--font-family);
+      font-size: clamp(22px, 1.6vw, 28px);
+      font-weight: var(--font-light);
+      line-height: 1;
+      cursor: pointer;
+      transition: opacity var(--transition-fast);
+    }
+
+    .menu-overlay__close:hover {
+      opacity: 0.55;
+    }
+
+    .menu-overlay__search {
+      margin-top: clamp(8px, 1vw, 16px);
+    }
+
+    .menu-overlay__search-label {
+      display: block;
+      font-size: var(--text-menu-search);
+      font-weight: var(--font-regular);
+      line-height: 1;
+      letter-spacing: 0.02em;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, 0.45);
+    }
+
+    .menu-overlay__line {
+      display: block;
+      width: 100%;
+      height: 1px;
+      margin: 0;
+      border: 0;
+      background-color: var(--color-line);
+    }
+
+    .menu-overlay__search .menu-overlay__line {
+      margin-top: 14px;
+    }
+
+    .menu-overlay__nav {
+      margin-top: clamp(36px, 4vw, 56px);
+    }
+
+    .menu-overlay__nav-link {
+      display: block;
+      font-size: var(--text-menu-nav);
+      font-weight: var(--font-medium);
+      line-height: 1.35;
+      letter-spacing: 0.01em;
+      text-transform: uppercase;
+      opacity: 0;
+      transform: translateY(18px);
+      transition:
+        opacity 0.5s cubic-bezier(0.22, 1, 0.36, 1),
+        transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .menu-overlay__nav-link + .menu-overlay__nav-link {
+      margin-top: clamp(10px, 1.2vw, 18px);
+    }
+
+    .menu-overlay__nav-link:hover,
+    .menu-overlay.is-open .menu-overlay__nav-link:hover {
+      opacity: 0.55;
+    }
+
+    .menu-overlay.is-open .menu-overlay__nav-link {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .menu-overlay.is-open .menu-overlay__nav-link:nth-child(1) { transition-delay: 0.08s; }
+    .menu-overlay.is-open .menu-overlay__nav-link:nth-child(2) { transition-delay: 0.14s; }
+    .menu-overlay.is-open .menu-overlay__nav-link:nth-child(3) { transition-delay: 0.2s; }
+    .menu-overlay.is-open .menu-overlay__nav-link:nth-child(4) { transition-delay: 0.26s; }
+    .menu-overlay.is-open .menu-overlay__nav-link:nth-child(5) { transition-delay: 0.32s; }
+
+    .menu-overlay__divider {
+      margin-top: clamp(48px, 5vw, 72px);
+    }
+
+    .menu-overlay__footer {
+      margin-top: clamp(36px, 4vw, 56px);
+      padding-bottom: clamp(48px, 6vw, 80px);
+    }
+
+    .menu-overlay__footer-link {
+      display: block;
+      font-size: var(--text-menu-nav);
+      font-weight: var(--font-medium);
+      line-height: 1.35;
+      letter-spacing: 0.01em;
+      text-transform: uppercase;
+      opacity: 0;
+      transform: translateY(18px);
+      transition:
+        opacity 0.5s cubic-bezier(0.22, 1, 0.36, 1),
+        transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .menu-overlay__footer-link + .menu-overlay__footer-link {
+      margin-top: clamp(10px, 1.2vw, 18px);
+    }
+
+    .menu-overlay__footer-link:hover,
+    .menu-overlay.is-open .menu-overlay__footer-link:hover {
+      opacity: 0.55;
+    }
+
+    .menu-overlay.is-open .menu-overlay__footer-link {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .menu-overlay.is-open .menu-overlay__footer-link:nth-child(1) { transition-delay: 0.38s; }
+    .menu-overlay.is-open .menu-overlay__footer-link:nth-child(2) { transition-delay: 0.44s; }
+
+    @media (prefers-reduced-motion: reduce) {
+      .menu-overlay__panel,
+      .menu-overlay__nav-link,
+      .menu-overlay__footer-link,
+      .header__menu-bar {
+        transition: none;
+        transform: none;
+        opacity: 1;
+      }
+    }
+
     /* Hero video */
     .hero-video {
       width: 100%;
-      background-color: var(--color-white);
+      background-color: var(--color-black);
+    }
+
+    .hero-video__carousel {
+      position: relative;
+      width: 100%;
+      overflow: hidden;
+      background-color: var(--color-black);
     }
 
     .hero-video__media {
+      position: absolute;
+      inset: 0;
+      display: block;
       width: 100%;
-      height: auto;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      opacity: 0;
+      transition: opacity 1s ease;
+    }
+
+    .hero-video__media.is-active {
+      opacity: 1;
+      z-index: 1;
     }
 
     /* Intro */
@@ -187,7 +444,7 @@
       height: 1px;
       margin-top: var(--space-title-divider);
       border: 0;
-      background-color: var(--color-black);
+      background-color: var(--color-line);
     }
 
     .intro__label,
@@ -205,6 +462,7 @@
 
     .intro__label {
       margin-top: var(--space-divider-label);
+      font-size: calc(var(--text-section-label) * 0.7);
     }
 
     /* Projects */
@@ -249,7 +507,7 @@
     .project-item__media {
       position: relative;
       overflow: hidden;
-      background-color: var(--color-white);
+      background-color: var(--color-black);
     }
 
     .projects__row--2 .project-item__media {
@@ -291,7 +549,7 @@
       position: absolute;
       inset: 0;
       z-index: 1;
-      background-color: var(--color-black);
+      background-color: var(--color-white);
       opacity: 0;
       transition: opacity var(--transition-base);
       pointer-events: none;
@@ -303,6 +561,18 @@
 
     .project-item:hover .project-item__overlay {
       opacity: 0.08;
+    }
+
+    .project-item__title {
+      margin-top: 12px;
+      font-size: var(--text-card-title);
+      font-weight: var(--font-regular);
+      line-height: 17.875px;
+    }
+
+    .project-item__title-brand {
+      display: block;
+      font-weight: var(--font-medium);
     }
 
     .projects__cta {
@@ -398,7 +668,7 @@
       flex: 0 0 1px;
       width: 1px;
       height: 30px;
-      background-color: #D1D1D1;
+      background-color: rgba(255, 255, 255, 0.35);
     }
 
     .career__entry--netease .career__separator { margin-left: clamp(20px, 2.6vw, 33px); margin-right: clamp(16px, 2vw, 26px); }
@@ -420,7 +690,7 @@
 
     .career__role {
       display: block;
-      color: var(--color-accent);
+      color: var(--color-white);
     }
 
     .career__body {
@@ -520,6 +790,10 @@
         gap: 24px;
       }
 
+      .header__actions {
+        gap: 24px;
+      }
+
       .career__grid,
       .contact__layout {
         grid-template-columns: 1fr;
@@ -552,6 +826,10 @@
         gap: 16px;
       }
 
+      .header__actions {
+        gap: 16px;
+      }
+
       .projects__row--2,
       .projects__row--3 {
         grid-template-columns: 1fr;
@@ -568,24 +846,75 @@
   <header class="header">
     <div class="container header__inner">
       <a href="index.html" class="header__logo">BROWNE</a>
-      <nav class="header__nav" aria-label="Primary">
-        <a href="work/index.html" class="header__nav-link">WORK</a>
-        <a href="#info" class="header__nav-link">INFO</a>
-        <a href="#contact" class="header__nav-link">CONTACT</a>
-      </nav>
+      <div class="header__actions">
+        <nav class="header__nav" aria-label="Primary">
+          <a href="work/index.html" class="header__nav-link">WORK</a>
+          <a href="#info" class="header__nav-link">INFO</a>
+          <a href="#contact" class="header__nav-link">CONTACT</a>
+        </nav>
+        <button
+          class="header__menu-toggle"
+          type="button"
+          aria-label="Open menu"
+          aria-expanded="false"
+          aria-controls="menu-overlay"
+        >
+          <span class="header__menu-bar" aria-hidden="true"></span>
+          <span class="header__menu-bar" aria-hidden="true"></span>
+        </button>
+      </div>
     </div>
   </header>
 
+  <div class="menu-overlay" id="menu-overlay" aria-hidden="true">
+    <div class="menu-overlay__panel container">
+      <div class="menu-overlay__header">
+        <a href="index.html" class="menu-overlay__logo">BROWNE</a>
+        <button class="menu-overlay__close" type="button" aria-label="Close menu">×</button>
+      </div>
+
+      <div class="menu-overlay__search">
+        <span class="menu-overlay__search-label">SEARCH</span>
+        <hr class="menu-overlay__line">
+      </div>
+
+      <nav class="menu-overlay__nav" aria-label="Menu">
+        <a href="work/project-18.html" class="menu-overlay__nav-link">AI DESIGN</a>
+        <a href="work/brand.html" class="menu-overlay__nav-link">BRAND</a>
+        <a href="work/brand-marketing.html" class="menu-overlay__nav-link">BRAND MARKETING</a>
+        <a href="#info" class="menu-overlay__nav-link">PERSONAL INFO</a>
+        <a href="#contact" class="menu-overlay__nav-link">CONTACT</a>
+      </nav>
+
+      <hr class="menu-overlay__line menu-overlay__divider">
+
+      <div class="menu-overlay__footer">
+        <a href="#contact" class="menu-overlay__footer-link">WECHAT</a>
+        <a href="tel:18821222916" class="menu-overlay__footer-link">PHONE NUMBER</a>
+      </div>
+    </div>
+  </div>
+
   <section class="hero-video" aria-label="Showreel">
-    <video
-      class="hero-video__media"
-      src="assets/hero-video.mp4"
-      autoplay
-      muted
-      loop
-      playsinline
-      preload="metadata"
-    ></video>
+    <!-- Upload videos to assets/hero-videos/ as 01.mp4, 02.mp4, etc. -->
+    <div class="hero-video__carousel">
+      <video
+        class="hero-video__media is-active"
+        src="assets/hero-videos/01.mp4"
+        data-hero-index="0"
+        muted
+        playsinline
+        preload="metadata"
+      ></video>
+      <video
+        class="hero-video__media"
+        src="assets/hero-videos/02.mp4"
+        data-hero-index="1"
+        muted
+        playsinline
+        preload="metadata"
+      ></video>
+    </div>
   </section>
 
   <main>
@@ -596,81 +925,117 @@
         <span class="intro__title-line intro__title-line--lower">management</span>
       </h1>
       <hr class="intro__divider">
-      <p class="intro__label">SELECTED WORK</p>
+      <p class="intro__label">Showcase And Work Method</p>
     </section>
 
     <section id="work" class="projects container" aria-label="Selected work">
       <div class="projects__row projects__row--2">
-        <article class="project-item project-item--hover-video" id="work-r1-left" data-project="pet-ip">
-          <a href="work/pet-ip.html" class="project-item__link" aria-label="Pet IP">
+        <article class="project-item" id="work-r1-left" data-project="featured-01">
+          <a href="work/featured-01.html" class="project-item__link" aria-label="Pet IP">
+            <div class="project-item__media">
+              <img class="project-item__image" src="assets/projects/featured-01/封面.jpg" alt="Pet IP" loading="lazy">
+              <div class="project-item__overlay" aria-hidden="true"></div>
+            </div>
+            <p class="project-item__title">
+              <span class="project-item__title-brand">Pet IP</span>
+              Life Heals Life
+            </p>
+          </a>
+        </article>
+        <article class="project-item" id="work-r1-right" data-project="featured-02">
+          <a href="work/featured-02.html" class="project-item__link" aria-label="S9 Game">
+            <div class="project-item__media">
+              <img class="project-item__image" src="assets/projects/featured-02/封面.jpg" alt="S9 Game" loading="lazy">
+              <div class="project-item__overlay" aria-hidden="true"></div>
+            </div>
+            <p class="project-item__title">
+              <span class="project-item__title-brand">S9 Game</span>
+              Brand &amp; Industrial Design
+            </p>
+          </a>
+        </article>
+      </div>
+
+      <div class="projects__row projects__row--2">
+        <article class="project-item project-item--hover-video" id="work-r2-left" data-project="pet-ip">
+          <a href="work/featured-03.html" class="project-item__link" aria-label="Pet IP">
             <div class="project-item__media">
               <img class="project-item__poster" src="assets/projects/pet-ip-cover.png" alt="Pet IP" loading="lazy">
               <video class="project-item__video" src="assets/projects/pet-ip-hover.mp4" muted playsinline loop preload="none"></video>
               <div class="project-item__overlay" aria-hidden="true"></div>
             </div>
+            <p class="project-item__title">
+              <span class="project-item__title-brand">Pet IP</span>
+              Life Heals Life
+            </p>
           </a>
         </article>
-        <article class="project-item project-item--hover-video" id="work-r1-right" data-project="s9game">
-          <a href="work/project-02.html" class="project-item__link" aria-label="S9 Game">
-            <div class="project-item__media">
-              <img class="project-item__poster" src="assets/projects/S9game/S9game.png" alt="S9 Game" loading="lazy">
-              <video class="project-item__video" src="assets/projects/S9game/视频-hover.mp4" muted playsinline loop preload="none"></video>
-              <div class="project-item__overlay" aria-hidden="true"></div>
-            </div>
-          </a>
-        </article>
-      </div>
-
-      <div class="projects__row projects__row--3">
-        <article class="project-item project-item--hover-video" id="work-r2-left" data-project="zgde">
-          <a href="work/project-03.html" class="project-item__link" aria-label="China Goose Brand Design">
-            <div class="project-item__media">
-              <img class="project-item__poster" src="assets/projects/ZGDE/1.jpg" alt="China Goose Brand Design" loading="lazy">
-              <video class="project-item__video" src="assets/projects/ZGDE/视频-hover.mp4" muted playsinline loop preload="none"></video>
-              <div class="project-item__overlay" aria-hidden="true"></div>
-            </div>
-          </a>
-        </article>
-        <article class="project-item project-item--hover-video" id="work-r2-center" data-project="under-rock">
-          <a href="work/project-04.html" class="project-item__link" aria-label="UNDER ROCK Brand Design">
+        <article class="project-item project-item--hover-video" id="work-r2-right" data-project="under-rock">
+          <a href="work/featured-04.html" class="project-item__link" aria-label="UNDER ROCK Brand Design">
             <div class="project-item__media">
               <img class="project-item__poster" src="assets/projects/under/石下品牌-封面.png" alt="UNDER ROCK Brand Design" loading="lazy">
               <video class="project-item__video" src="assets/projects/under/视频-hover.mp4" muted playsinline loop preload="none"></video>
               <div class="project-item__overlay" aria-hidden="true"></div>
             </div>
+            <p class="project-item__title">
+              <span class="project-item__title-brand">UNDER ROCK</span>
+              Outdoor Brand Design
+            </p>
           </a>
         </article>
-        <article class="project-item project-item--hover-video" id="work-r2-right" data-project="so-relax">
-          <a href="work/project-05.html" class="project-item__link" aria-label="SO RELAX Brand Packaging Design">
-            <div class="project-item__media">
-              <img class="project-item__poster" src="assets/projects/SO RELAX/枕头.png" alt="SO RELAX Brand Packaging Design" loading="lazy">
-              <video class="project-item__video" src="assets/projects/SO RELAX/视频-hover.mp4" muted playsinline loop preload="none"></video>
-              <div class="project-item__overlay" aria-hidden="true"></div>
-            </div>
-          </a>
-        </article>
+      </div>
+
+      <div class="projects__row projects__row--2">
         <article class="project-item" id="work-r3-left" data-project="xiaoju">
-          <a href="work/project-06.html" class="project-item__link" aria-label="Orange Energy Brand Design 小桔充电品牌设计">
+          <a href="work/featured-05.html" class="project-item__link" aria-label="Orange Energy Brand Design 小桔充电品牌设计">
             <div class="project-item__media">
               <img class="project-item__image" src="assets/projects/XIAOJU/小桔充电.png" alt="Orange Energy Brand Design 小桔充电品牌设计" loading="lazy">
               <div class="project-item__overlay" aria-hidden="true"></div>
             </div>
+            <p class="project-item__title">
+              <span class="project-item__title-brand">Orange Energy Brand Design</span>
+              小桔充电品牌设计
+            </p>
           </a>
         </article>
-        <article class="project-item" id="work-r3-center" data-project="didi-gas">
-          <a href="work/project-07.html" class="project-item__link" aria-label="Brand Design 滴滴加油品牌设计">
+        <article class="project-item project-item--hover-video" id="work-r3-right" data-project="s9game">
+          <a href="work/featured-06.html" class="project-item__link" aria-label="S9 Game 电竞椅创意全案">
             <div class="project-item__media">
-              <img class="project-item__image" src="assets/projects/DIDI加油/滴滴加油.png" alt="Brand Design 滴滴加油品牌设计" loading="lazy">
+              <img class="project-item__poster" src="assets/projects/S9game/S9game.png" alt="S9 Game 电竞椅创意全案" loading="lazy">
+              <video class="project-item__video" src="assets/projects/S9game/视频-hover.mp4" muted playsinline loop preload="none"></video>
               <div class="project-item__overlay" aria-hidden="true"></div>
             </div>
+            <p class="project-item__title">
+              <span class="project-item__title-brand">S9 Game</span>
+              电竞椅创意全案
+            </p>
           </a>
         </article>
-        <article class="project-item" id="work-r3-right" data-project="jd-joy">
-          <a href="work/project-08.html" class="project-item__link" aria-label="JD JOY">
+      </div>
+
+      <div class="projects__row projects__row--2">
+        <article class="project-item" id="work-r4-left" data-project="featured-07">
+          <a href="work/featured-07.html" class="project-item__link" aria-label="Brand Design 滴滴加油品牌设计">
             <div class="project-item__media">
-              <img class="project-item__image" src="assets/projects/JD JOY/JD JOY.png" alt="JD JOY" loading="lazy">
+              <img class="project-item__image" src="assets/projects/featured-07/封面.jpg" alt="Brand Design 滴滴加油品牌设计" loading="lazy">
               <div class="project-item__overlay" aria-hidden="true"></div>
             </div>
+            <p class="project-item__title">
+              <span class="project-item__title-brand">Brand Design</span>
+              滴滴加油品牌设计
+            </p>
+          </a>
+        </article>
+        <article class="project-item" id="work-r4-right" data-project="featured-08">
+          <a href="work/featured-08.html" class="project-item__link" aria-label="JD JOY">
+            <div class="project-item__media">
+              <img class="project-item__image" src="assets/projects/featured-08/封面.jpg" alt="JD JOY" loading="lazy">
+              <div class="project-item__overlay" aria-hidden="true"></div>
+            </div>
+            <p class="project-item__title">
+              <span class="project-item__title-brand">JD JOY</span>
+              Brand Design
+            </p>
           </a>
         </article>
       </div>
@@ -686,7 +1051,7 @@
         <article class="career__entry career__entry--netease">
           <div class="career__entry-header">
             <div class="career__brand">
-              <img class="career__logo career__logo--netease" src="assets/logos/网易logo.png" alt="NetEase" width="214" height="40">
+              <img class="career__logo career__logo--netease" src="assets/logos/网易logo.png?v=2" alt="NetEase" width="214" height="40">
             </div>
             <span class="career__separator" aria-hidden="true"></span>
             <div class="career__meta">
@@ -697,14 +1062,14 @@
           <div class="career__body">
             <p>Led end-to-end brand system building from 0 to 1 and full-cycle design enablement, driving business growth through a complete design closed loop of "brand mindshare → marketing traffic acquisition → sales conversion".</p>
             <p>Possess strong strategic insight and creative execution capabilities, adept at solving business pain points with systematic design thinking.</p>
-            <img class="career__sublogo" src="assets/logos/网易严选logo.png" alt="NetEase Yanxuan" width="93" height="21">
+            <img class="career__sublogo" src="assets/logos/网易严选logo.png?v=2" alt="NetEase Yanxuan" width="92" height="22">
           </div>
         </article>
 
         <article class="career__entry career__entry--didi">
           <div class="career__entry-header">
             <div class="career__brand">
-              <img class="career__logo career__logo--didi" src="assets/logos/滴滴logo.png" alt="Didi" width="127" height="40">
+              <img class="career__logo career__logo--didi" src="assets/logos/滴滴logo.png?v=2" alt="Didi" width="127" height="40">
             </div>
             <span class="career__separator" aria-hidden="true"></span>
             <div class="career__meta">
@@ -724,7 +1089,7 @@
         <article class="career__entry career__entry--jd">
           <div class="career__entry-header">
             <div class="career__brand">
-              <img class="career__logo career__logo--jd" src="assets/logos/京东logo.png" alt="JD.com" width="137" height="40">
+              <img class="career__logo career__logo--jd" src="assets/logos/京东logo.png?v=2" alt="JD.com" width="137" height="40">
             </div>
             <span class="career__separator" aria-hidden="true"></span>
             <div class="career__meta">
@@ -744,7 +1109,7 @@
         <article class="career__entry career__entry--posher">
           <div class="career__entry-header">
             <div class="career__brand career__brand--posher">
-              <img class="career__logo career__logo--posher" src="assets/logos/posherlogo.png" alt="Posher" width="136" height="35">
+              <img class="career__logo career__logo--posher" src="assets/logos/posherlogo.png?v=2" alt="Posher" width="136" height="35">
             </div>
             <span class="career__separator" aria-hidden="true"></span>
             <div class="career__meta">
@@ -786,20 +1151,69 @@
       const header = document.querySelector(".header");
       const navLinks = document.querySelectorAll(".header__nav-link");
       const headerHeight = header.offsetHeight;
-      const heroVideo = document.querySelector(".hero-video__media");
+      const menuToggle = document.querySelector(".header__menu-toggle");
+      const menuOverlay = document.querySelector(".menu-overlay");
+      const menuClose = document.querySelector(".menu-overlay__close");
+      const menuLinks = document.querySelectorAll(".menu-overlay a[href]");
 
-      if (heroVideo) {
-        function setHeroVideoAspectRatio() {
-          if (heroVideo.videoWidth && heroVideo.videoHeight) {
-            heroVideo.style.aspectRatio = heroVideo.videoWidth + " / " + heroVideo.videoHeight;
-          }
-        }
-
-        heroVideo.addEventListener("loadedmetadata", setHeroVideoAspectRatio);
-        if (heroVideo.readyState >= 1) {
-          setHeroVideoAspectRatio();
-        }
+      function openMenu() {
+        menuOverlay.classList.add("is-open");
+        menuOverlay.setAttribute("aria-hidden", "false");
+        menuToggle.classList.add("is-active");
+        menuToggle.setAttribute("aria-expanded", "true");
+        document.body.classList.add("menu-open");
       }
+
+      function closeMenu() {
+        menuOverlay.classList.remove("is-open");
+        menuOverlay.setAttribute("aria-hidden", "true");
+        menuToggle.classList.remove("is-active");
+        menuToggle.setAttribute("aria-expanded", "false");
+        document.body.classList.remove("menu-open");
+      }
+
+      menuToggle.addEventListener("click", function () {
+        if (menuOverlay.classList.contains("is-open")) {
+          closeMenu();
+        } else {
+          openMenu();
+        }
+      });
+
+      menuClose.addEventListener("click", closeMenu);
+
+      menuOverlay.addEventListener("click", function (event) {
+        if (event.target === menuOverlay) {
+          closeMenu();
+        }
+      });
+
+      document.addEventListener("keydown", function (event) {
+        if (event.key === "Escape" && menuOverlay.classList.contains("is-open")) {
+          closeMenu();
+        }
+      });
+
+      menuLinks.forEach(function (link) {
+        link.addEventListener("click", function (event) {
+          const targetId = link.getAttribute("href");
+          if (!targetId || targetId.charAt(0) !== "#") {
+            closeMenu();
+            return;
+          }
+
+          const target = document.querySelector(targetId);
+          if (!target) return;
+
+          event.preventDefault();
+          closeMenu();
+
+          window.setTimeout(function () {
+            const top = target.getBoundingClientRect().top + window.scrollY - headerHeight;
+            window.scrollTo({ top: top, behavior: "smooth" });
+          }, 320);
+        });
+      });
 
       navLinks.forEach(function (link) {
         link.addEventListener("click", function (event) {
@@ -833,6 +1247,90 @@
       }
 
       window.addEventListener("scroll", updateActiveNav, { passive: true });
+
+      const heroCarousel = document.querySelector(".hero-video__carousel");
+
+      if (heroCarousel) {
+        const heroVideos = [...heroCarousel.querySelectorAll(".hero-video__media")];
+        const readyVideos = [];
+
+        function setHeroAspectRatio(video) {
+          if (video.videoWidth && video.videoHeight) {
+            heroCarousel.style.aspectRatio = video.videoWidth + " / " + video.videoHeight;
+          }
+        }
+
+        function activateHeroVideo(index) {
+          const nextVideo = readyVideos[index];
+          if (!nextVideo) return;
+
+          heroVideos.forEach(function (video) {
+            const isActive = video === nextVideo;
+            video.classList.toggle("is-active", isActive);
+            video.classList.remove("is-fading-out");
+
+            if (!isActive) {
+              video.pause();
+            }
+          });
+
+          nextVideo.currentTime = 0;
+          const playPromise = nextVideo.play();
+          if (playPromise !== undefined) {
+            playPromise.catch(function () {});
+          }
+
+          setHeroAspectRatio(nextVideo);
+        }
+
+        function goToNextHeroVideo(currentVideo) {
+          const currentIndex = readyVideos.indexOf(currentVideo);
+          const nextIndex = (currentIndex + 1) % readyVideos.length;
+
+          currentVideo.classList.remove("is-active");
+          currentVideo.pause();
+          activateHeroVideo(nextIndex);
+        }
+
+        heroVideos.forEach(function (video) {
+          video.addEventListener("loadedmetadata", function () {
+            if (video.classList.contains("is-active")) {
+              setHeroAspectRatio(video);
+            }
+          });
+
+          video.addEventListener("canplay", function () {
+            if (readyVideos.indexOf(video) === -1) {
+              readyVideos.push(video);
+              readyVideos.sort(function (a, b) {
+                return Number(a.dataset.heroIndex) - Number(b.dataset.heroIndex);
+              });
+
+              if (readyVideos.length === 1) {
+                activateHeroVideo(0);
+              }
+            }
+          });
+
+          video.addEventListener("ended", function () {
+            if (readyVideos.length > 1) {
+              goToNextHeroVideo(video);
+            } else {
+              video.currentTime = 0;
+              video.play().catch(function () {});
+            }
+          });
+
+          video.addEventListener("error", function () {
+            video.remove();
+          });
+        });
+
+        heroVideos[0].load();
+        if (heroVideos[1]) {
+          heroVideos[1].load();
+        }
+      }
 
       const projectItems = document.querySelectorAll(".projects .project-item");
       const projectsCta = document.querySelector(".projects__cta");
