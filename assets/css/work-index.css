@@ -3,6 +3,7 @@
   --color-black: #000000;
   --color-gray: #9C9D9D;
   --color-accent: #D60000;
+  --color-line: rgba(255, 255, 255, 0.5);
 
   --font-family: "Montserrat", "Helvetica Neue", Helvetica, Arial, sans-serif;
   --font-light: 300;
@@ -35,13 +36,15 @@ html {
   scroll-behavior: smooth;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background-color: var(--color-black);
+  color-scheme: dark;
 }
 
 body {
   font-family: var(--font-family);
   font-weight: var(--font-regular);
-  color: var(--color-black);
-  background-color: var(--color-white);
+  color: var(--color-white);
+  background-color: var(--color-black);
   overflow-x: hidden;
 }
 
@@ -68,7 +71,7 @@ a {
   z-index: 100;
   width: 100%;
   height: var(--header-height);
-  background-color: var(--color-white);
+  background-color: var(--color-black);
 }
 
 .header__inner {
@@ -100,6 +103,10 @@ a {
 .header__nav-link:hover,
 .header__nav-link.is-active {
   opacity: 0.55;
+}
+
+.work-index {
+  background-color: var(--color-black);
 }
 
 .work-index__masthead {
@@ -137,7 +144,7 @@ a {
 
 .work-index__filter:hover,
 .work-index__filter.is-active {
-  color: var(--color-black);
+  color: var(--color-white);
 }
 
 .work-index__grid {
@@ -166,7 +173,7 @@ a {
   position: relative;
   overflow: hidden;
   aspect-ratio: 598.63 / 336.73;
-  background-color: var(--color-white);
+  background-color: var(--color-black);
 }
 
 .work-card__poster,
@@ -203,7 +210,7 @@ a {
   position: absolute;
   inset: 0;
   z-index: 1;
-  background-color: var(--color-black);
+  background-color: var(--color-white);
   opacity: 0;
   transition: opacity var(--transition-base);
   pointer-events: none;

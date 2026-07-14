@@ -38,7 +38,8 @@
       --text-body-sm: 12.213px;
       --text-body-leading: 18.285px;
       --text-contact: 35.062px;
-      --text-footer-brand: clamp(80px, 12.8vw, 244.501px);
+      --text-footer-brand: clamp(40px, 5.2vw, 72px);
+      --text-footer-cta: clamp(16px, 1.6vw, 22px);
 
       --page-padding: clamp(32px, 2.08vw, 48px);
       --divider-inset: clamp(32px, 2.08vw, 48px);
@@ -124,17 +125,36 @@
     .header {
       position: sticky;
       top: 0;
-      z-index: 100;
+      z-index: 120;
       width: 100%;
       height: var(--header-height);
+      margin-bottom: calc(-1 * var(--header-height));
+      background-color: transparent;
+      pointer-events: none;
+    }
+
+    .header__backdrop {
+      position: absolute;
+      inset: 0;
       background-color: var(--color-black);
+      opacity: var(--header-backdrop-opacity, 0);
+      pointer-events: none;
     }
 
     .header__inner {
+      position: relative;
+      z-index: 1;
       display: flex;
       align-items: center;
       justify-content: space-between;
       height: 100%;
+      pointer-events: auto;
+    }
+
+    .header__logo,
+    .header__nav-link,
+    .header__menu-toggle {
+      pointer-events: auto;
     }
 
     .header__logo {
@@ -422,6 +442,38 @@
       z-index: 1;
     }
 
+    .hero-video__dots {
+      position: absolute;
+      left: 50%;
+      bottom: clamp(20px, 3vw, 32px);
+      z-index: 2;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      transform: translateX(-50%);
+      pointer-events: auto;
+    }
+
+    .hero-video__dot {
+      width: 18px;
+      height: 2.5px;
+      padding: 0;
+      border: 0;
+      border-radius: 999px;
+      background-color: rgba(255, 255, 255, 0.3);
+      cursor: pointer;
+      transition: background-color 0.35s ease, opacity 0.35s ease;
+    }
+
+    .hero-video__dot.is-active {
+      background-color: var(--color-white);
+    }
+
+    .hero-video__dot:hover {
+      opacity: 0.85;
+    }
+
     /* Intro */
     .intro {
       padding-top: var(--space-hero-top);
@@ -448,14 +500,12 @@
     }
 
     .intro__label,
-    .career .section-heading,
     .contact .section-heading {
       font-size: var(--text-section-label);
       font-weight: var(--font-medium);
       line-height: 1;
     }
 
-    .career .section-heading,
     .contact .section-heading {
       text-transform: uppercase;
     }
@@ -463,6 +513,13 @@
     .intro__label {
       margin-top: var(--space-divider-label);
       font-size: calc(var(--text-section-label) * 0.7);
+    }
+
+    .career__heading .section-heading {
+      font-size: calc(var(--text-section-label) * 0.7);
+      font-weight: var(--font-medium);
+      line-height: 1;
+      text-transform: none;
     }
 
     /* Projects */
@@ -617,6 +674,47 @@
       margin-bottom: var(--space-divider-heading);
     }
 
+    .career__heading {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+    }
+
+    .career__lang-switch {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-shrink: 0;
+    }
+
+    .career__lang-btn {
+      border: 0;
+      padding: 0;
+      background: transparent;
+      color: var(--color-white);
+      font-family: var(--font-family);
+      font-size: var(--text-nav);
+      font-weight: var(--font-medium);
+      line-height: 1;
+      letter-spacing: 0.02em;
+      opacity: 0.35;
+      cursor: pointer;
+      transition: opacity var(--transition-fast);
+    }
+
+    .career__lang-btn.is-active {
+      opacity: 1;
+    }
+
+    .career__lang-btn:hover {
+      opacity: 0.55;
+    }
+
+    .career__lang-btn.is-active:hover {
+      opacity: 1;
+    }
+
     .career__grid {
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -761,8 +859,15 @@
     /* Footer brand */
     .footer-brand {
       width: 100%;
-      padding: 0 var(--page-padding) 48px;
-      overflow: hidden;
+      padding: clamp(48px, 6vw, 96px) var(--page-padding) clamp(32px, 4vw, 48px);
+    }
+
+    .footer-brand__row {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 24px;
+      opacity: 0.5;
     }
 
     .footer-brand__text {
@@ -770,14 +875,31 @@
       font-weight: var(--font-medium);
       line-height: 0.95;
       letter-spacing: -0.02em;
+      text-transform: uppercase;
       white-space: nowrap;
     }
 
-    .footer-brand__handle {
-      margin-top: 24px;
-      font-size: 18.05px;
+    .footer-brand__cta {
+      font-size: var(--text-footer-cta);
       font-weight: var(--font-medium);
-      line-height: 1;
+      line-height: 1.2;
+      letter-spacing: 0.02em;
+      text-align: right;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+
+    .footer-brand__cta span {
+      display: block;
+    }
+
+    .footer-brand__line {
+      display: block;
+      width: 100%;
+      height: 1px;
+      margin-top: clamp(28px, 3.2vw, 40px);
+      border: 0;
+      background-color: rgba(255, 255, 255, 0.5);
     }
 
     /* Responsive */
@@ -835,8 +957,12 @@
         grid-template-columns: 1fr;
       }
 
-      .footer-brand__text {
-        white-space: normal;
+      .footer-brand__row {
+        align-items: flex-start;
+      }
+
+      .footer-brand__cta {
+        font-size: 14px;
       }
     }
   </style>
@@ -844,6 +970,7 @@
 <body>
 
   <header class="header">
+    <div class="header__backdrop" aria-hidden="true"></div>
     <div class="container header__inner">
       <a href="index.html" class="header__logo">BROWNE</a>
       <div class="header__actions">
@@ -896,11 +1023,10 @@
   </div>
 
   <section class="hero-video" aria-label="Showreel">
-    <!-- Upload videos to assets/hero-videos/ as 01.mp4, 02.mp4, etc. -->
     <div class="hero-video__carousel">
       <video
         class="hero-video__media is-active"
-        src="assets/hero-videos/01.mp4"
+        src="assets/hero-video.mp4"
         data-hero-index="0"
         muted
         playsinline
@@ -908,12 +1034,30 @@
       ></video>
       <video
         class="hero-video__media"
-        src="assets/hero-videos/02.mp4"
+        src="assets/hero-video2.mp4"
         data-hero-index="1"
         muted
         playsinline
         preload="metadata"
       ></video>
+      <div class="hero-video__dots" role="tablist" aria-label="Video carousel">
+        <button
+          class="hero-video__dot is-active"
+          type="button"
+          role="tab"
+          aria-label="Video 1"
+          aria-selected="true"
+          data-hero-index="0"
+        ></button>
+        <button
+          class="hero-video__dot"
+          type="button"
+          role="tab"
+          aria-label="Video 2"
+          aria-selected="false"
+          data-hero-index="1"
+        ></button>
+      </div>
     </div>
   </section>
 
@@ -931,26 +1075,26 @@
     <section id="work" class="projects container" aria-label="Selected work">
       <div class="projects__row projects__row--2">
         <article class="project-item" id="work-r1-left" data-project="featured-01">
-          <a href="work/featured-01.html" class="project-item__link" aria-label="Pet IP">
+          <a href="work/featured-01.html" class="project-item__link" aria-label="Insight into Ai Design Practical cases Ai能力基建与业务赋能">
             <div class="project-item__media">
-              <img class="project-item__image" src="assets/projects/featured-01/封面.jpg" alt="Pet IP" loading="lazy">
+              <img class="project-item__image" src="assets/projects/featured-01/封面.jpg" alt="Insight into Ai Design Practical cases Ai能力基建与业务赋能" loading="lazy">
               <div class="project-item__overlay" aria-hidden="true"></div>
             </div>
             <p class="project-item__title">
-              <span class="project-item__title-brand">Pet IP</span>
-              Life Heals Life
+              <span class="project-item__title-brand">Insight into Ai Design Practical cases</span>
+              Ai能力基建与业务赋能
             </p>
           </a>
         </article>
         <article class="project-item" id="work-r1-right" data-project="featured-02">
-          <a href="work/featured-02.html" class="project-item__link" aria-label="S9 Game">
+          <a href="work/featured-02.html" class="project-item__link" aria-label="Brand Marketing 聊聊创意驱动助力业务争夺吸引力">
             <div class="project-item__media">
-              <img class="project-item__image" src="assets/projects/featured-02/封面.jpg" alt="S9 Game" loading="lazy">
+              <img class="project-item__image" src="assets/projects/featured-02/封面.jpg" alt="Brand Marketing 聊聊创意驱动助力业务争夺吸引力" loading="lazy">
               <div class="project-item__overlay" aria-hidden="true"></div>
             </div>
             <p class="project-item__title">
-              <span class="project-item__title-brand">S9 Game</span>
-              Brand &amp; Industrial Design
+              <span class="project-item__title-brand">Brand Marketing</span>
+              聊聊创意驱动助力业务争夺吸引力
             </p>
           </a>
         </article>
@@ -1015,26 +1159,26 @@
 
       <div class="projects__row projects__row--2">
         <article class="project-item" id="work-r4-left" data-project="featured-07">
-          <a href="work/featured-07.html" class="project-item__link" aria-label="Brand Design 滴滴加油品牌设计">
+          <a href="work/featured-07.html" class="project-item__link" aria-label="Work Methods Help Drive Data Growth 聊聊设计策略提升点击和转化效果">
             <div class="project-item__media">
-              <img class="project-item__image" src="assets/projects/featured-07/封面.jpg" alt="Brand Design 滴滴加油品牌设计" loading="lazy">
+              <img class="project-item__image" src="assets/projects/featured-07/封面.jpg" alt="Work Methods Help Drive Data Growth 聊聊设计策略提升点击和转化效果" loading="lazy">
               <div class="project-item__overlay" aria-hidden="true"></div>
             </div>
             <p class="project-item__title">
-              <span class="project-item__title-brand">Brand Design</span>
-              滴滴加油品牌设计
+              <span class="project-item__title-brand">Work Methods Help Drive Data Growth</span>
+              聊聊设计策略提升点击和转化效果
             </p>
           </a>
         </article>
         <article class="project-item" id="work-r4-right" data-project="featured-08">
-          <a href="work/featured-08.html" class="project-item__link" aria-label="JD JOY">
+          <a href="work/featured-08.html" class="project-item__link" aria-label="Team &amp; Project Management 聊聊关于团队管理和团队效能">
             <div class="project-item__media">
-              <img class="project-item__image" src="assets/projects/featured-08/封面.jpg" alt="JD JOY" loading="lazy">
+              <img class="project-item__image" src="assets/projects/featured-08/封面.jpg" alt="Team &amp; Project Management 聊聊关于团队管理和团队效能" loading="lazy">
               <div class="project-item__overlay" aria-hidden="true"></div>
             </div>
             <p class="project-item__title">
-              <span class="project-item__title-brand">JD JOY</span>
-              Brand Design
+              <span class="project-item__title-brand">Team &amp; Project Management</span>
+              聊聊关于团队管理和团队效能
             </p>
           </a>
         </article>
@@ -1045,7 +1189,17 @@
 
     <section id="info" class="career container" aria-label="Career history">
       <hr class="section-divider">
-      <h2 class="section-heading">Career History</h2>
+      <div class="career__heading">
+        <h2
+          class="section-heading career__i18n"
+          data-en="Career History"
+          data-zh="职业经历"
+        >Career History</h2>
+        <div class="career__lang-switch" role="group" aria-label="Language">
+          <button type="button" class="career__lang-btn is-active" data-lang="en" aria-pressed="true">EN</button>
+          <button type="button" class="career__lang-btn" data-lang="zh" aria-pressed="false">CN</button>
+        </div>
+      </div>
 
       <div class="career__grid">
         <article class="career__entry career__entry--netease">
@@ -1055,13 +1209,29 @@
             </div>
             <span class="career__separator" aria-hidden="true"></span>
             <div class="career__meta">
-              <span class="career__date">Apr 2022 – Present</span>
-              <span class="career__role">Brand Marketing Design Leader</span>
+              <span
+                class="career__date career__i18n"
+                data-en="Apr 2022 – Present"
+                data-zh="2022年4月 – 至今"
+              >Apr 2022 – Present</span>
+              <span
+                class="career__role career__i18n"
+                data-en="Brand Marketing Design Leader"
+                data-zh="网易严选品牌营销设计组组长"
+              >Brand Marketing Design Leader</span>
             </div>
           </div>
           <div class="career__body">
-            <p>Led end-to-end brand system building from 0 to 1 and full-cycle design enablement, driving business growth through a complete design closed loop of "brand mindshare → marketing traffic acquisition → sales conversion".</p>
-            <p>Possess strong strategic insight and creative execution capabilities, adept at solving business pain points with systematic design thinking.</p>
+            <p
+              class="career__i18n"
+              data-en='Led end-to-end brand system building from 0 to 1 and full-cycle design enablement, driving business growth through a complete design closed loop of "brand mindshare → marketing traffic acquisition → sales conversion".'
+              data-zh="主导品牌0-1体系构建及全链路设计赋能，通过「品牌心智-营销引流-销售转化」的完整设计闭环驱动业务增长；"
+            >Led end-to-end brand system building from 0 to 1 and full-cycle design enablement, driving business growth through a complete design closed loop of "brand mindshare → marketing traffic acquisition → sales conversion".</p>
+            <p
+              class="career__i18n"
+              data-en="Possess strong strategic insight and creative execution capabilities, adept at solving business pain points with systematic design thinking."
+              data-zh="具备极强的策略洞察与创意落地能力，擅长以系统化设计思维解决业务痛点，在品牌升级、市场营销及团队专业化建设方面拥有深厚沉淀。"
+            >Possess strong strategic insight and creative execution capabilities, adept at solving business pain points with systematic design thinking.</p>
             <img class="career__sublogo" src="assets/logos/网易严选logo.png?v=2" alt="NetEase Yanxuan" width="92" height="22">
           </div>
         </article>
@@ -1073,15 +1243,35 @@
             </div>
             <span class="career__separator" aria-hidden="true"></span>
             <div class="career__meta">
-              <span class="career__date">Jun 2021 – Jan 2022</span>
-              <span class="career__role">Senior Brand Designer</span>
+              <span
+                class="career__date career__i18n"
+                data-en="Jun 2021 – Jan 2022"
+                data-zh="2021年6月 – 2022年1月"
+              >Jun 2021 – Jan 2022</span>
+              <span
+                class="career__role career__i18n"
+                data-en="Senior Brand Designer"
+                data-zh="高级品牌设计师"
+              >Senior Brand Designer</span>
             </div>
           </div>
           <div class="career__body">
             <ul>
-              <li>Built and iterated brand systems for Didi's energy sector (Didi Refueling, Xiaoju Charging)</li>
-              <li>Standardized full brand touchpoints (in-app, offline stations, marketing merchandise) to ensure consistent brand identity across all scenarios</li>
-              <li>Delivered high-standard visual &amp; operational design to strengthen sub-brand awareness, driving user adoption and conversion growth for new businesses</li>
+              <li
+                class="career__i18n"
+                data-en="Built and iterated brand systems for Didi's energy sector (Didi Refueling, Xiaoju Charging)"
+                data-zh="负责滴滴旗下能源板块（滴滴加油、小桔充电）的品牌体系构建与迭代升级。"
+              >Built and iterated brand systems for Didi's energy sector (Didi Refueling, Xiaoju Charging)</li>
+              <li
+                class="career__i18n"
+                data-en="Standardized full brand touchpoints (in-app, offline stations, marketing merchandise) to ensure consistent brand identity across all scenarios"
+                data-zh="深度把控用户运营及品牌全触点（线上App、线下场站、营销周边）的规范落地，确保品牌心智在多元业务场景下的高度统一。"
+              >Standardized full brand touchpoints (in-app, offline stations, marketing merchandise) to ensure consistent brand identity across all scenarios</li>
+              <li
+                class="career__i18n"
+                data-en="Delivered high-standard visual &amp; operational design to strengthen sub-brand awareness, driving user adoption and conversion growth for new businesses"
+                data-zh="通过高标准的视觉把控与精细化的运营设计，有效建立并强化了子品牌的市场心智，助力新业务在用户侧的快速认知与转化增长。"
+              >Delivered high-standard visual &amp; operational design to strengthen sub-brand awareness, driving user adoption and conversion growth for new businesses</li>
             </ul>
           </div>
         </article>
@@ -1093,15 +1283,35 @@
             </div>
             <span class="career__separator" aria-hidden="true"></span>
             <div class="career__meta">
-              <span class="career__date">Mar 2020 – Jun 2021</span>
-              <span class="career__role">Brand Design Team Lead</span>
+              <span
+                class="career__date career__i18n"
+                data-en="Mar 2020 – Jun 2021"
+                data-zh="2020年3月 – 2021年6月"
+              >Mar 2020 – Jun 2021</span>
+              <span
+                class="career__role career__i18n"
+                data-en="Brand Design Team Lead"
+                data-zh="品牌设计团队负责人"
+              >Brand Design Team Lead</span>
             </div>
           </div>
           <div class="career__body">
             <ul>
-              <li>Led company-level brand visual upgrade for JD Daojia (O2O business)</li>
-              <li>Built and optimized marketing design system, unifying visual identity across online platform and full offline marketing scenarios</li>
-              <li>Established systematic design guidelines to resolve O2O multi-touchpoint design pain points, improved brand recognizability &amp; professionalism in complex offline environments, and empowered business scale growth</li>
+              <li
+                class="career__i18n"
+                data-en="Led company-level brand visual upgrade for JD Daojia (O2O business)"
+                data-zh="主导京东到家（O2O业务）的公司级品牌视觉升级。"
+              >Led company-level brand visual upgrade for JD Daojia (O2O business)</li>
+              <li
+                class="career__i18n"
+                data-en="Built and optimized marketing design system, unifying visual identity across online platform and full offline marketing scenarios"
+                data-zh="负责搭建并完善了营销端设计体系，实现了从线上平台到全年线下营销场景的视觉一致性。"
+              >Built and optimized marketing design system, unifying visual identity across online platform and full offline marketing scenarios</li>
+              <li
+                class="career__i18n"
+                data-en="Established systematic design guidelines to resolve O2O multi-touchpoint design pain points, improved brand recognizability &amp; professionalism in complex offline environments, and empowered business scale growth"
+                data-zh="通过系统化的设计规范，解决了O2O业务触点多、场景杂的设计痛点，显著提升了品牌在复杂线下环境中的识别度与专业感，以品牌力赋能业务规模扩张。"
+              >Established systematic design guidelines to resolve O2O multi-touchpoint design pain points, improved brand recognizability &amp; professionalism in complex offline environments, and empowered business scale growth</li>
             </ul>
           </div>
         </article>
@@ -1113,14 +1323,30 @@
             </div>
             <span class="career__separator" aria-hidden="true"></span>
             <div class="career__meta">
-              <span class="career__date">Oct 2017 – Jan 2020</span>
-              <span class="career__role">Art Director</span>
+              <span
+                class="career__date career__i18n"
+                data-en="Oct 2017 – Jan 2020"
+                data-zh="2017年10月 – 2020年1月"
+              >Oct 2017 – Jan 2020</span>
+              <span
+                class="career__role career__i18n"
+                data-en="Art Director"
+                data-zh="艺术总监"
+              >Art Director</span>
             </div>
           </div>
           <div class="career__body">
             <ul>
-              <li>Led full-cycle commercial creative projects for premium brands including Bright Dairy, Michelin, and Freshippo</li>
-              <li>Delivered extensive commercial case works, and won multiple large-scale creative pitches for the agency</li>
+              <li
+                class="career__i18n"
+                data-en="Led full-cycle commercial creative projects for premium brands including Bright Dairy, Michelin, and Freshippo"
+                data-zh="负责光明乳业/米其林/盒马等品牌商业全案。"
+              >Led full-cycle commercial creative projects for premium brands including Bright Dairy, Michelin, and Freshippo</li>
+              <li
+                class="career__i18n"
+                data-en="Delivered extensive commercial case works, and won multiple large-scale creative pitches for the agency"
+                data-zh="主导完成大量商业全案，为公司赢得多次大型创意比稿。"
+              >Delivered extensive commercial case works, and won multiple large-scale creative pitches for the agency</li>
             </ul>
           </div>
         </article>
@@ -1142,8 +1368,14 @@
   </main>
 
   <footer class="footer-brand container">
-    <p class="footer-brand__text">BRONWE</p>
-    <p class="footer-brand__handle">@BOWEN</p>
+    <div class="footer-brand__row">
+      <p class="footer-brand__text">BROWNE</p>
+      <p class="footer-brand__cta">
+        <span>LET’S WORK</span>
+        <span>TOGETHER</span>
+      </p>
+    </div>
+    <hr class="footer-brand__line">
   </footer>
 
   <script>
@@ -1151,10 +1383,24 @@
       const header = document.querySelector(".header");
       const navLinks = document.querySelectorAll(".header__nav-link");
       const headerHeight = header.offsetHeight;
+      const heroVideo = document.querySelector(".hero-video");
       const menuToggle = document.querySelector(".header__menu-toggle");
       const menuOverlay = document.querySelector(".menu-overlay");
       const menuClose = document.querySelector(".menu-overlay__close");
       const menuLinks = document.querySelectorAll(".menu-overlay a[href]");
+
+      function updateHeaderBackdrop() {
+        const fadeDistance = heroVideo
+          ? Math.min(heroVideo.offsetHeight * 0.45, 180)
+          : 140;
+        const opacity = Math.min(1, Math.max(0, window.scrollY / fadeDistance));
+        header.style.setProperty("--header-backdrop-opacity", opacity.toFixed(3));
+        header.classList.toggle("is-scrolled", opacity > 0.02);
+      }
+
+      updateHeaderBackdrop();
+      window.addEventListener("scroll", updateHeaderBackdrop, { passive: true });
+      window.addEventListener("resize", updateHeaderBackdrop, { passive: true });
 
       function openMenu() {
         menuOverlay.classList.add("is-open");
@@ -1248,11 +1494,50 @@
 
       window.addEventListener("scroll", updateActiveNav, { passive: true });
 
+      const careerLangButtons = document.querySelectorAll(".career__lang-btn");
+      const careerI18nElements = document.querySelectorAll(".career__i18n");
+
+      function setCareerLanguage(lang) {
+        const attr = lang === "zh" ? "data-zh" : "data-en";
+
+        careerI18nElements.forEach(function (element) {
+          const value = element.getAttribute(attr);
+          if (value) {
+            element.textContent = value;
+          }
+        });
+
+        careerLangButtons.forEach(function (button) {
+          const isActive = button.dataset.lang === lang;
+          button.classList.toggle("is-active", isActive);
+          button.setAttribute("aria-pressed", isActive ? "true" : "false");
+        });
+
+        try {
+          localStorage.setItem("career-lang", lang);
+        } catch (error) {}
+      }
+
+      careerLangButtons.forEach(function (button) {
+        button.addEventListener("click", function () {
+          setCareerLanguage(button.dataset.lang);
+        });
+      });
+
+      try {
+        const savedCareerLang = localStorage.getItem("career-lang");
+        if (savedCareerLang === "zh" || savedCareerLang === "en") {
+          setCareerLanguage(savedCareerLang);
+        }
+      } catch (error) {}
+
       const heroCarousel = document.querySelector(".hero-video__carousel");
+      const heroDots = [...document.querySelectorAll(".hero-video__dot")];
 
       if (heroCarousel) {
         const heroVideos = [...heroCarousel.querySelectorAll(".hero-video__media")];
         const readyVideos = [];
+        let activeHeroIndex = -1;
 
         function setHeroAspectRatio(video) {
           if (video.videoWidth && video.videoHeight) {
@@ -1260,9 +1545,17 @@
           }
         }
 
+        function updateHeroDots(index) {
+          heroDots.forEach(function (dot, dotIndex) {
+            const isActive = dotIndex === index;
+            dot.classList.toggle("is-active", isActive);
+            dot.setAttribute("aria-selected", isActive ? "true" : "false");
+          });
+        }
+
         function activateHeroVideo(index) {
           const nextVideo = readyVideos[index];
-          if (!nextVideo) return;
+          if (!nextVideo || index === activeHeroIndex) return;
 
           heroVideos.forEach(function (video) {
             const isActive = video === nextVideo;
@@ -1273,6 +1566,9 @@
               video.pause();
             }
           });
+
+          activeHeroIndex = index;
+          updateHeroDots(index);
 
           nextVideo.currentTime = 0;
           const playPromise = nextVideo.play();
@@ -1286,11 +1582,19 @@
         function goToNextHeroVideo(currentVideo) {
           const currentIndex = readyVideos.indexOf(currentVideo);
           const nextIndex = (currentIndex + 1) % readyVideos.length;
-
-          currentVideo.classList.remove("is-active");
-          currentVideo.pause();
           activateHeroVideo(nextIndex);
         }
+
+        heroDots.forEach(function (dot) {
+          dot.addEventListener("click", function () {
+            const targetIndex = Number(dot.dataset.heroIndex);
+            const readyIndex = readyVideos.findIndex(function (video) {
+              return Number(video.dataset.heroIndex) === targetIndex;
+            });
+            if (readyIndex === -1) return;
+            activateHeroVideo(readyIndex);
+          });
+        });
 
         heroVideos.forEach(function (video) {
           video.addEventListener("loadedmetadata", function () {

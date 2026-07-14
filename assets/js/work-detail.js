@@ -1,4 +1,12 @@
 (function () {
+  const backToTopButton = document.querySelector('[data-footer-action="top"]');
+
+  if (backToTopButton) {
+    backToTopButton.addEventListener("click", function () {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    });
+  }
+
   const scrollVideos = document.querySelectorAll(".work-detail__scroll-video");
 
   if (scrollVideos.length && "IntersectionObserver" in window) {
