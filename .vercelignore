@@ -1,0 +1,6 @@
+# Deploy this folder as a static site.
+# Exclude local tooling from uploads.
+node_modules
+.git
+*.tgz
+.DS_Store
