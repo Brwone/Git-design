@@ -238,6 +238,53 @@ a {
   display: block;
 }
 
+.work-detail__figure--video {
+  position: relative;
+}
+
+.work-detail__sound-toggle {
+  position: absolute;
+  right: clamp(12px, 1.6vw, 20px);
+  bottom: clamp(12px, 1.6vw, 20px);
+  z-index: 3;
+  width: 44px;
+  height: 44px;
+  border: 0;
+  border-radius: 50%;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(0, 0, 0, 0.62);
+  color: var(--color-white);
+  cursor: pointer;
+  transition: background-color var(--transition-fast), transform var(--transition-fast);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.28);
+}
+
+.work-detail__sound-toggle:hover,
+.work-detail__sound-toggle:focus-visible {
+  background-color: rgba(0, 0, 0, 0.8);
+  transform: scale(1.04);
+}
+
+.work-detail__sound-toggle.is-unmuted {
+  background-color: rgba(255, 255, 255, 0.92);
+  color: var(--color-black);
+}
+
+.work-detail__sound-toggle svg {
+  width: 18px;
+  height: 18px;
+  display: block;
+  pointer-events: none;
+}
+
+.work-detail__sound-toggle[aria-pressed="true"] .work-detail__sound-icon--muted,
+.work-detail__sound-toggle[aria-pressed="false"] .work-detail__sound-icon--on {
+  display: none;
+}
+
 .work-detail__figure--click-video {
   position: relative;
 }
