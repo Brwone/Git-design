@@ -4,6 +4,9 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>BOWEN — Brand &amp; Marketing</title>
+  <link rel="preload" href="assets/fonts/montserrat/montserrat-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="assets/fonts/montserrat/montserrat-latin-700-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="assets/hero-video3.mov?v=202608142" as="video" type="video/quicktime">
   <link rel="stylesheet" href="assets/css/fonts.css">
 <style>
     :root {
@@ -83,6 +86,109 @@
       overflow-x: hidden;
     }
 
+    body.is-loading {
+      overflow: hidden;
+      pointer-events: none;
+    }
+
+    body.is-loading .header,
+    body.is-loading .menu-overlay,
+    body.is-loading .hero-video,
+    body.is-loading main,
+    body.is-loading .footer-brand {
+      visibility: hidden;
+      pointer-events: none;
+    }
+
+    .site-loader {
+      position: fixed;
+      inset: 0;
+      z-index: 10000;
+      display: grid;
+      place-items: center;
+      background-color: var(--color-black);
+      opacity: 1;
+      pointer-events: auto;
+      touch-action: none;
+      transition: opacity 0.18s ease, visibility 0.18s ease;
+    }
+
+    .site-loader.is-done {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+
+    .site-loader__panel {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      color: var(--color-white);
+    }
+
+    .site-loader__number {
+      color: var(--color-white);
+      font-family: ui-monospace, "SFMono-Regular", "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
+      font-size: 20px;
+      font-weight: 400;
+      line-height: 1;
+      letter-spacing: 0;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .site-loader__odometer {
+      display: inline-flex;
+      align-items: center;
+      min-height: 1em;
+    }
+
+    .site-loader__wheel {
+      height: 1em;
+      overflow: hidden;
+      position: relative;
+      -webkit-mask-image: linear-gradient(
+        to bottom,
+        transparent 0,
+        #000 0.03em,
+        #000 calc(100% - 0.03em),
+        transparent 100%
+      );
+      mask-image: linear-gradient(
+        to bottom,
+        transparent 0,
+        #000 0.03em,
+        #000 calc(100% - 0.03em),
+        transparent 100%
+      );
+    }
+
+    .site-loader__wheel-track {
+      display: flex;
+      flex-direction: column;
+      will-change: transform;
+      transition: transform 0.42s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .site-loader__wheel-track span {
+      height: 1em;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 0.62em;
+    }
+
+    .site-loader__wheel--hundreds {
+      width: 0;
+      opacity: 0;
+      overflow: hidden;
+      transition: width 0.28s ease, opacity 0.28s ease;
+    }
+
+    .site-loader__wheel--hundreds.is-visible {
+      width: 0.62em;
+      opacity: 1;
+    }
+
     img,
     video {
       display: block;
@@ -122,12 +228,13 @@
 
     /* Header */
     .header {
-      position: sticky;
+      position: fixed;
       top: 0;
+      left: 0;
+      right: 0;
       z-index: 120;
       width: 100%;
       height: var(--header-height);
-      margin-bottom: calc(-1 * var(--header-height));
       background-color: transparent;
       pointer-events: none;
     }
@@ -138,6 +245,7 @@
       background-color: var(--color-black);
       opacity: var(--header-backdrop-opacity, 0);
       pointer-events: none;
+      transition: opacity 0.25s ease;
     }
 
     .header__inner {
@@ -420,6 +528,8 @@
     .hero-video__carousel {
       position: relative;
       width: 100%;
+      min-height: 100dvh;
+      min-height: 100svh;
       overflow: hidden;
       background-color: var(--color-black);
     }
@@ -471,6 +581,49 @@
 
     .hero-video__dot:hover {
       opacity: 0.85;
+    }
+
+    .hero-video__sound-toggle {
+      position: absolute;
+      left: clamp(12px, 1.6vw, 20px);
+      bottom: clamp(12px, 1.6vw, 20px);
+      z-index: 2;
+      width: 44px;
+      height: 44px;
+      border: 0;
+      border-radius: 50%;
+      padding: 0;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background-color: rgba(0, 0, 0, 0.62);
+      color: var(--color-white);
+      cursor: pointer;
+      transition: background-color var(--transition-fast), transform var(--transition-fast);
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.28);
+    }
+
+    .hero-video__sound-toggle:hover,
+    .hero-video__sound-toggle:focus-visible {
+      background-color: rgba(0, 0, 0, 0.8);
+      transform: scale(1.04);
+    }
+
+    .hero-video__sound-toggle.is-unmuted {
+      background-color: rgba(255, 255, 255, 0.92);
+      color: var(--color-black);
+    }
+
+    .hero-video__sound-toggle svg {
+      width: 18px;
+      height: 18px;
+      display: block;
+      pointer-events: none;
+    }
+
+    .hero-video__sound-toggle[aria-pressed="true"] .hero-video__sound-icon--muted,
+    .hero-video__sound-toggle[aria-pressed="false"] .hero-video__sound-icon--on {
+      display: none;
     }
 
     /* Intro */
@@ -564,6 +717,11 @@
         opacity 1.1s cubic-bezier(0.22, 1, 0.36, 1),
         transform 1.1s cubic-bezier(0.22, 1, 0.36, 1);
       will-change: opacity, transform;
+    }
+
+    .project-item:not(.project-item--hover-video) {
+      content-visibility: auto;
+      contain-intrinsic-size: 600px 420px;
     }
 
     .project-item.is-visible {
@@ -1030,7 +1188,19 @@
     }
   </style>
 </head>
-<body>
+<body class="is-loading">
+
+  <div class="site-loader" id="site-loader" aria-live="polite" aria-busy="true">
+    <div class="site-loader__panel">
+      <div class="site-loader__number" id="site-loader-number" aria-hidden="true">
+        <div class="site-loader__odometer">
+          <div class="site-loader__wheel site-loader__wheel--hundreds" id="site-loader-wheel-hundreds"></div>
+          <div class="site-loader__wheel" id="site-loader-wheel-tens"></div>
+          <div class="site-loader__wheel" id="site-loader-wheel-ones"></div>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <header class="header">
     <div class="header__backdrop" aria-hidden="true"></div>
@@ -1089,38 +1259,22 @@
     <div class="hero-video__carousel">
       <video
         class="hero-video__media is-active"
-        src="assets/hero-video.mp4"
         data-hero-index="0"
-        muted
         playsinline
-        preload="metadata"
-      ></video>
-      <video
-        class="hero-video__media"
-        src="assets/hero-video2.mp4"
-        data-hero-index="1"
         muted
-        playsinline
-        preload="metadata"
-      ></video>
-      <div class="hero-video__dots" role="tablist" aria-label="Video carousel">
-        <button
-          class="hero-video__dot is-active"
-          type="button"
-          role="tab"
-          aria-label="Video 1"
-          aria-selected="true"
-          data-hero-index="0"
-        ></button>
-        <button
-          class="hero-video__dot"
-          type="button"
-          role="tab"
-          aria-label="Video 2"
-          aria-selected="false"
-          data-hero-index="1"
-        ></button>
-      </div>
+        preload="auto"
+      >
+        <source src="assets/hero-video3.mov?v=202608142" type="video/quicktime">
+        <source src="assets/hero-video3.mp4?v=202608142" type="video/mp4">
+      </video>
+      <button type="button" class="hero-video__sound-toggle" aria-label="关闭声音" aria-pressed="true">
+        <svg class="hero-video__sound-icon hero-video__sound-icon--muted" viewBox="0 0 24 24" aria-hidden="true">
+          <path fill="currentColor" d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v2.21l2.45 2.45c.03-.2.05-.41.05-.63zm2.5 0c0 .94-.2 1.82-.54 2.64l1.51 1.51C20.63 14.91 21 13.5 21 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86 5 3.54 5 6.71zM4.27 3 3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18v2.06c1.38-.31 2.63-.95 3.69-1.81L19.73 21 21 19.73l-9-9L4.27 3zM12 4 9.91 6.09 12 8.18V4z"/>
+        </svg>
+        <svg class="hero-video__sound-icon hero-video__sound-icon--on" viewBox="0 0 24 24" aria-hidden="true">
+          <path fill="currentColor" d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/>
+        </svg>
+      </button>
     </div>
   </section>
 
@@ -1144,7 +1298,7 @@
         <article class="project-item" id="work-r1-left" data-project="featured-01">
           <a href="work/featured-01.html" class="project-item__link" aria-label="Insight into Ai Design Practical cases Ai能力基建与业务赋能">
             <div class="project-item__media">
-              <img class="project-item__image" src="assets/projects/featured-01/封面.jpg" alt="Insight into Ai Design Practical cases Ai能力基建与业务赋能" loading="lazy">
+              <img class="project-item__image" src="assets/projects/featured-01/封面.webp" alt="Insight into Ai Design Practical cases Ai能力基建与业务赋能" loading="lazy" decoding="async">
               <div class="project-item__overlay" aria-hidden="true"></div>
             </div>
             <p class="project-item__title">
@@ -1156,7 +1310,7 @@
         <article class="project-item project-item--hover-video" id="work-r1-right" data-project="featured-02">
           <a href="work/featured-02.html" class="project-item__link" aria-label="Brand Marketing 聊聊创意驱动助力业务争夺吸引力">
             <div class="project-item__media">
-              <img class="project-item__poster" src="assets/projects/featured-02/封面.jpg" alt="Brand Marketing 聊聊创意驱动助力业务争夺吸引力" loading="lazy">
+              <img class="project-item__poster" src="assets/projects/featured-02/封面.webp" alt="Brand Marketing 聊聊创意驱动助力业务争夺吸引力" loading="lazy" decoding="async">
               <video class="project-item__video" src="assets/projects/featured-02/封面视频.mp4" muted playsinline loop preload="none"></video>
               <div class="project-item__overlay" aria-hidden="true"></div>
             </div>
@@ -1172,7 +1326,7 @@
         <article class="project-item project-item--hover-video" id="work-r2-left" data-project="pet-ip">
           <a href="work/featured-03.html" class="project-item__link" aria-label="网易严选宠物IP出道日记">
             <div class="project-item__media">
-              <img class="project-item__poster" src="assets/projects/pet-ip-cover.png" alt="网易严选宠物IP出道日记" loading="lazy">
+              <img class="project-item__poster" src="assets/projects/pet-ip/pet-ip-cover.webp" alt="网易严选宠物IP出道日记" loading="lazy" decoding="async">
               <video class="project-item__video" src="assets/projects/pet-ip-hover.mp4" muted playsinline loop preload="none"></video>
               <div class="project-item__overlay" aria-hidden="true"></div>
             </div>
@@ -1185,7 +1339,7 @@
         <article class="project-item project-item--hover-video" id="work-r2-right" data-project="under-rock">
           <a href="work/featured-04.html" class="project-item__link" aria-label="UNDER ROCK Brand Design">
             <div class="project-item__media">
-              <img class="project-item__poster" src="assets/projects/under/石下品牌-封面.png" alt="UNDER ROCK Brand Design" loading="lazy">
+              <img class="project-item__poster" src="assets/projects/under/石下品牌-封面.webp" alt="UNDER ROCK Brand Design" loading="lazy" decoding="async">
               <video class="project-item__video" src="assets/projects/under/视频-hover.mp4" muted playsinline loop preload="none"></video>
               <div class="project-item__overlay" aria-hidden="true"></div>
             </div>
@@ -1201,7 +1355,7 @@
         <article class="project-item" id="work-r3-left" data-project="xiaoju">
           <a href="work/featured-05.html" class="project-item__link" aria-label="Orange Energy Brand Design 小桔充电品牌设计">
             <div class="project-item__media">
-              <img class="project-item__image" src="assets/projects/XIAOJU/小桔充电.png" alt="Orange Energy Brand Design 小桔充电品牌设计" loading="lazy">
+              <img class="project-item__image" src="assets/projects/XIAOJU/小桔充电.webp" alt="Orange Energy Brand Design 小桔充电品牌设计" loading="lazy" decoding="async">
               <div class="project-item__overlay" aria-hidden="true"></div>
             </div>
             <p class="project-item__title">
@@ -1213,7 +1367,7 @@
         <article class="project-item project-item--hover-video" id="work-r3-right" data-project="s9game">
           <a href="work/featured-06.html" class="project-item__link" aria-label="S9 Game 电竞椅创意全案">
             <div class="project-item__media">
-              <img class="project-item__poster" src="assets/projects/S9game/S9game.png" alt="S9 Game 电竞椅创意全案" loading="lazy">
+              <img class="project-item__poster" src="assets/projects/S9game/S9game.webp" alt="S9 Game 电竞椅创意全案" loading="lazy" decoding="async">
               <video class="project-item__video" src="assets/projects/S9game/视频-hover.mp4" muted playsinline loop preload="none"></video>
               <div class="project-item__overlay" aria-hidden="true"></div>
             </div>
@@ -1229,7 +1383,7 @@
         <article class="project-item" id="work-r4-left" data-project="featured-07">
           <a href="work/featured-07.html" class="project-item__link" aria-label="Work Methods Help Drive Data Growth 聊聊设计策略提升点击和转化效果">
             <div class="project-item__media">
-              <img class="project-item__image" src="assets/projects/featured-07/封面.jpg" alt="Work Methods Help Drive Data Growth 聊聊设计策略提升点击和转化效果" loading="lazy">
+              <img class="project-item__image" src="assets/projects/featured-07/封面.webp" alt="Work Methods Help Drive Data Growth 聊聊设计策略提升点击和转化效果" loading="lazy" decoding="async">
               <div class="project-item__overlay" aria-hidden="true"></div>
             </div>
             <p class="project-item__title">
@@ -1241,7 +1395,7 @@
         <article class="project-item" id="work-r4-right" data-project="featured-08">
           <a href="work/featured-08.html" class="project-item__link" aria-label="Team &amp; Project Management 聊聊关于团队管理和团队效能">
             <div class="project-item__media">
-              <img class="project-item__image" src="assets/projects/featured-08/封面.jpg" alt="Team &amp; Project Management 聊聊关于团队管理和团队效能" loading="lazy">
+              <img class="project-item__image" src="assets/projects/featured-08/封面.webp" alt="Team &amp; Project Management 聊聊关于团队管理和团队效能" loading="lazy" decoding="async">
               <div class="project-item__overlay" aria-hidden="true"></div>
             </div>
             <p class="project-item__title">
@@ -1273,7 +1427,7 @@
         <article class="career__entry career__entry--netease">
           <div class="career__entry-header">
             <div class="career__brand">
-              <img class="career__logo career__logo--netease" src="assets/logos/网易logo.png?v=2" alt="NetEase" width="214" height="40">
+              <img class="career__logo career__logo--netease" src="assets/logos/网易logo.webp?v=2" alt="NetEase" width="214" height="40" decoding="async" loading="lazy">
             </div>
             <span class="career__separator" aria-hidden="true"></span>
             <div class="career__meta">
@@ -1300,14 +1454,14 @@
               data-en="Possess strong strategic insight and creative execution capabilities, adept at solving business pain points with systematic design thinking."
               data-zh="具备极强的策略洞察与创意落地能力，擅长以系统化设计思维解决业务痛点，在品牌升级、市场营销及团队专业化建设方面拥有深厚沉淀。"
             >Possess strong strategic insight and creative execution capabilities, adept at solving business pain points with systematic design thinking.</p>
-            <img class="career__sublogo" src="assets/logos/网易严选logo.png?v=2" alt="NetEase Yanxuan" width="92" height="22">
+            <img class="career__sublogo" src="assets/logos/网易严选logo.webp?v=2" alt="NetEase Yanxuan" width="92" height="22" decoding="async" loading="lazy">
           </div>
         </article>
 
         <article class="career__entry career__entry--didi">
           <div class="career__entry-header">
             <div class="career__brand">
-              <img class="career__logo career__logo--didi" src="assets/logos/滴滴logo.png?v=2" alt="Didi" width="127" height="40">
+              <img class="career__logo career__logo--didi" src="assets/logos/滴滴logo.webp?v=2" alt="Didi" width="127" height="40" decoding="async" loading="lazy">
             </div>
             <span class="career__separator" aria-hidden="true"></span>
             <div class="career__meta">
@@ -1347,7 +1501,7 @@
         <article class="career__entry career__entry--jd">
           <div class="career__entry-header">
             <div class="career__brand">
-              <img class="career__logo career__logo--jd" src="assets/logos/京东logo.png?v=2" alt="JD.com" width="137" height="40">
+              <img class="career__logo career__logo--jd" src="assets/logos/京东logo.webp?v=2" alt="JD.com" width="137" height="40" decoding="async" loading="lazy">
             </div>
             <span class="career__separator" aria-hidden="true"></span>
             <div class="career__meta">
@@ -1359,7 +1513,7 @@
               <span
                 class="career__role career__i18n"
                 data-en="Brand Design Team Lead"
-                data-zh="品牌设计团队负责人"
+                data-zh="品牌设计组组长"
               >Brand Design Team Lead</span>
             </div>
           </div>
@@ -1387,7 +1541,7 @@
         <article class="career__entry career__entry--posher">
           <div class="career__entry-header">
             <div class="career__brand career__brand--posher">
-              <img class="career__logo career__logo--posher" src="assets/logos/posherlogo.png?v=2" alt="Posher" width="136" height="35">
+              <img class="career__logo career__logo--posher" src="assets/logos/posherlogo.webp?v=2" alt="Posher" width="136" height="35" decoding="async" loading="lazy">
             </div>
             <span class="career__separator" aria-hidden="true"></span>
             <div class="career__meta">
@@ -1426,10 +1580,10 @@
       <p class="expertise__label">Professional Expertise</p>
       <div class="expertise__media">
         <img
-          src="assets/professional-expertise.jpg"
+          src="assets/professional-expertise.webp"
           alt="Professional Expertise: AI应用与策略、系统架构能力、设计驱动增长、创意全案能力"
           loading="lazy"
-        >
+         decoding="async">
       </div>
     </section>
 
@@ -1438,10 +1592,10 @@
       <p class="about__label">About Browne</p>
       <div class="about__media">
         <img
-          src="assets/about-browne.jpg"
+          src="assets/about-browne.webp?v=202608142"
           alt="About Browne"
           loading="lazy"
-        >
+         decoding="async">
       </div>
     </section>
 
@@ -1450,7 +1604,7 @@
       <div class="contact__layout">
         <h2 class="section-heading">Contact</h2>
         <div class="contact__details">
-          <p class="contact__label">Emile</p>
+          <p class="contact__label">Email</p>
           <p><a class="contact__link" href="mailto:brownejiang@163.com">brownejiang@163.com</a></p>
           <p class="contact__label">WHCHAT</p>
           <p>18821222916</p>
@@ -1472,6 +1626,122 @@
 
   <script>
     (function () {
+      const loader = document.getElementById("site-loader");
+      const wheelHundreds = document.getElementById("site-loader-wheel-hundreds");
+      const wheelTens = document.getElementById("site-loader-wheel-tens");
+      const wheelOnes = document.getElementById("site-loader-wheel-ones");
+      const heroVideoEl = document.querySelector(".hero-video__media.is-active") || document.querySelector(".hero-video__media");
+      const LOADER_DURATION_MS = 2000;
+      let loaderFinished = false;
+      let loaderTracks = null;
+
+      window.__siteLoaderDone = false;
+
+      function buildWheelTrack(maxDigit) {
+        const track = document.createElement("div");
+        track.className = "site-loader__wheel-track";
+
+        for (let digit = 0; digit <= maxDigit; digit += 1) {
+          const slot = document.createElement("span");
+          slot.textContent = String(digit);
+          track.appendChild(slot);
+        }
+
+        return track;
+      }
+
+      function initLoaderOdometer() {
+        if (!wheelTens || !wheelOnes || !wheelHundreds) {
+          return null;
+        }
+
+        wheelHundreds.appendChild(buildWheelTrack(1));
+        wheelTens.appendChild(buildWheelTrack(9));
+        wheelOnes.appendChild(buildWheelTrack(9));
+
+        return {
+          hundreds: wheelHundreds.querySelector(".site-loader__wheel-track"),
+          tens: wheelTens.querySelector(".site-loader__wheel-track"),
+          ones: wheelOnes.querySelector(".site-loader__wheel-track"),
+        };
+      }
+
+      function setLoaderValue(value) {
+        if (!loaderTracks) return;
+
+        const clamped = Math.max(0, Math.min(100, Math.round(value)));
+        const hundreds = Math.floor(clamped / 100);
+        const tens = Math.floor((clamped % 100) / 10);
+        const ones = clamped % 10;
+
+        wheelHundreds.classList.toggle("is-visible", hundreds > 0);
+        loaderTracks.hundreds.style.transform = "translateY(-" + hundreds + "em)";
+        loaderTracks.tens.style.transform = "translateY(-" + tens + "em)";
+        loaderTracks.ones.style.transform = "translateY(-" + ones + "em)";
+      }
+
+      function finishSiteLoader() {
+        if (loaderFinished) return;
+        loaderFinished = true;
+
+        setLoaderValue(100);
+
+        window.setTimeout(function () {
+          if (loader) {
+            loader.classList.add("is-done");
+            loader.setAttribute("aria-busy", "false");
+          }
+
+          document.body.classList.remove("is-loading");
+          window.__siteLoaderDone = true;
+          window.dispatchEvent(new CustomEvent("siteLoaderDone"));
+        }, 120);
+      }
+
+      function initSiteLoader() {
+        loaderTracks = initLoaderOdometer();
+
+        if (!loader || !loaderTracks) {
+          document.body.classList.remove("is-loading");
+          window.__siteLoaderDone = true;
+          window.dispatchEvent(new CustomEvent("siteLoaderDone"));
+          return;
+        }
+
+        if (heroVideoEl) {
+          heroVideoEl.preload = "auto";
+          heroVideoEl.load();
+        }
+
+        if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+          setLoaderValue(100);
+          finishSiteLoader();
+          return;
+        }
+
+        setLoaderValue(0);
+        const loaderStartedAt = performance.now();
+
+        function tick(now) {
+          if (loaderFinished) return;
+
+          const elapsed = now - loaderStartedAt;
+          const linear = Math.min(1, elapsed / LOADER_DURATION_MS);
+          const eased = 1 - Math.pow(1 - linear, 2.35);
+          setLoaderValue(Math.round(eased * 100));
+
+          if (elapsed < LOADER_DURATION_MS) {
+            window.requestAnimationFrame(tick);
+          } else {
+            finishSiteLoader();
+          }
+        }
+
+        window.requestAnimationFrame(tick);
+      }
+
+      initSiteLoader();
+
       const header = document.querySelector(".header");
       const navLinks = document.querySelectorAll(".header__nav-link");
       const headerHeight = header.offsetHeight;
@@ -1482,10 +1752,12 @@
       const menuLinks = document.querySelectorAll(".menu-overlay a[href]");
 
       function updateHeaderBackdrop() {
+        const fadeStart = 32;
         const fadeDistance = heroVideo
-          ? Math.min(heroVideo.offsetHeight * 0.45, 180)
-          : 140;
-        const opacity = Math.min(1, Math.max(0, window.scrollY / fadeDistance));
+          ? Math.min(heroVideo.offsetHeight * 0.38, 200)
+          : 160;
+        const scrolled = Math.max(0, window.scrollY - fadeStart);
+        const opacity = scrolled <= 0 ? 0 : Math.min(1, scrolled / fadeDistance);
         header.style.setProperty("--header-backdrop-opacity", opacity.toFixed(3));
         header.classList.toggle("is-scrolled", opacity > 0.02);
       }
@@ -1493,6 +1765,10 @@
       updateHeaderBackdrop();
       window.addEventListener("scroll", updateHeaderBackdrop, { passive: true });
       window.addEventListener("resize", updateHeaderBackdrop, { passive: true });
+      window.addEventListener("siteLoaderDone", function () {
+        window.scrollTo(0, 0);
+        updateHeaderBackdrop();
+      });
 
       function openMenu() {
         menuOverlay.classList.add("is-open");
@@ -1625,16 +1901,102 @@
 
       const heroCarousel = document.querySelector(".hero-video__carousel");
       const heroDots = [...document.querySelectorAll(".hero-video__dot")];
+      const heroSoundToggle = document.querySelector(".hero-video__sound-toggle");
 
       if (heroCarousel) {
         const heroVideos = [...heroCarousel.querySelectorAll(".hero-video__media")];
         const readyVideos = [];
         let activeHeroIndex = -1;
+        let heroLoaderReleased = window.__siteLoaderDone === true;
 
-        function setHeroAspectRatio(video) {
-          if (video.videoWidth && video.videoHeight) {
-            heroCarousel.style.aspectRatio = video.videoWidth + " / " + video.videoHeight;
+        function maybeStartHero() {
+          if (!heroLoaderReleased || readyVideos.length === 0) return;
+          activateHeroVideo(0);
+        }
+
+        window.addEventListener("siteLoaderDone", function () {
+          heroLoaderReleased = true;
+          maybeStartHero();
+        });
+
+        if (window.__siteLoaderDone) {
+          heroLoaderReleased = true;
+        }
+
+        function syncHeroSoundToggle(video) {
+          if (!heroSoundToggle || !video) return;
+
+          const isMuted = video.muted;
+          heroSoundToggle.setAttribute("aria-pressed", isMuted ? "false" : "true");
+          heroSoundToggle.setAttribute("aria-label", isMuted ? "开启声音" : "关闭声音");
+          heroSoundToggle.classList.toggle("is-unmuted", !isMuted);
+        }
+
+        function setHeroSound(video, enabled) {
+          if (!video) return;
+
+          if (enabled) {
+            video.muted = false;
+            video.defaultMuted = false;
+            video.removeAttribute("muted");
+            video.volume = 1;
+          } else {
+            video.muted = true;
+            video.defaultMuted = true;
+            video.setAttribute("muted", "");
           }
+
+          syncHeroSoundToggle(video);
+        }
+
+        function playHeroVideo(video) {
+          const playPromise = video.play();
+          if (playPromise !== undefined) {
+            playPromise.catch(function () {});
+          }
+        }
+
+        function tryPlayHeroWithSound(video) {
+          if (!video) return;
+
+          setHeroSound(video, true);
+          const playPromise = video.play();
+
+          if (playPromise === undefined) {
+            syncHeroSoundToggle(video);
+            return;
+          }
+
+          playPromise.then(function () {
+            syncHeroSoundToggle(video);
+          }).catch(function () {
+            setHeroSound(video, false);
+            playHeroVideo(video);
+          });
+        }
+
+        if (heroSoundToggle) {
+          heroSoundToggle.addEventListener("click", function (event) {
+            event.preventDefault();
+            event.stopPropagation();
+
+            const activeVideo = heroVideos.find(function (video) {
+              return video.classList.contains("is-active");
+            }) || heroVideos[0];
+
+            if (!activeVideo) return;
+
+            if (activeVideo.muted) {
+              setHeroSound(activeVideo, true);
+              playHeroVideo(activeVideo);
+            } else {
+              setHeroSound(activeVideo, false);
+            }
+          });
+        }
+
+        function setHeroAspectRatio() {
+          /* Hero uses full-viewport cover; avoid aspect-ratio letterboxing. */
         }
 
         function updateHeroDots(index) {
@@ -1663,10 +2025,7 @@
           updateHeroDots(index);
 
           nextVideo.currentTime = 0;
-          const playPromise = nextVideo.play();
-          if (playPromise !== undefined) {
-            playPromise.catch(function () {});
-          }
+          tryPlayHeroWithSound(nextVideo);
 
           setHeroAspectRatio(nextVideo);
         }
@@ -1703,7 +2062,7 @@
               });
 
               if (readyVideos.length === 1) {
-                activateHeroVideo(0);
+                maybeStartHero();
               }
             }
           });
@@ -1713,13 +2072,10 @@
               goToNextHeroVideo(video);
             } else {
               video.currentTime = 0;
-              video.play().catch(function () {});
+              playHeroVideo(video);
             }
           });
 
-          video.addEventListener("error", function () {
-            video.remove();
-          });
         });
 
         heroVideos[0].load();

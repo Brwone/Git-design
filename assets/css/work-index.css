@@ -164,6 +164,11 @@ a {
   transition: opacity 0.6s ease, transform 0.6s ease;
 }
 
+.work-card:not(.work-card--hover-video) {
+  content-visibility: auto;
+  contain-intrinsic-size: 400px 480px;
+}
+
 .work-card.is-visible {
   opacity: 1;
   transform: translateY(0);

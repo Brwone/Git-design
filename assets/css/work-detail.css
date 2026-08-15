@@ -194,6 +194,12 @@ a {
   background-color: var(--color-black);
 }
 
+.work-detail__banner img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
 .work-detail__copy {
   width: 100%;
   max-width: none;
